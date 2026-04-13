@@ -262,6 +262,74 @@ const MODULES = [
       keyPoints: ['Phase folliculaire = force maximale', 'Phase menstruelle = douceur obligatoire', 'SENSIA adapte automatiquement avec le mode cycle activé'],
     },
   },
+  {
+    id: 'muscu_basics',
+    emoji: '🌱',
+    title: 'Les bases de la muscu féminine',
+    subtitle: 'Mythes, nutrition, progression',
+    duration: '4 min',
+    color: '#4A9B7F',
+    bg: '#E0F2EC',
+    tag: 'Débutante',
+    content: {
+      intro: "Des mythes tenaces entourent la musculation féminine. Voici ce que dit vraiment la science — et comment progresser intelligemment dès le début.",
+      sections: [
+        {
+          title: "🚫 Mythes vs Réalités",
+          text: "MYTHE : \"La musculation rend les femmes masculines\" → FAUX. Les femmes ont 15x moins de testostérone. La muscu donne un corps tonique et fort, pas masculin.\n\nMYTHE : \"Les poids légers tonifient, les lourds font grossir\" → FAUX. La tonicité = muscle développé. Pour développer, il faut progresser en charge.\n\nVRAI : La musculation protège le périnée à long terme si bien pratiquée — stabilité du bassin, meilleure coordination.",
+        },
+        {
+          title: "🥗 Nutrition pour la muscu",
+          text: "PROTÉINES : 1.6 à 2g par kg de poids de corps par jour. Sources : œufs, poulet, poisson, légumineuses, tofu.\n\nRÉCUPÉRATION : repas protéiné dans les 2h post-séance. Le muscle se construit pendant le repos, pas pendant l'entraînement.\n\nHYDRATATION : 2-3L d'eau par jour. La déshydratation réduit la force de 10%.",
+        },
+        {
+          title: "📈 Plan de progression 8 semaines",
+          text: "Semaines 1-2 : Corps au poids uniquement. Squat, fente, pompe, pont fessier. Focus : technique parfaite.\n\nSemaines 3-4 : Haltères légers (2-5 kg). Mêmes mouvements + curl, élévations. Ajouter 1 série par semaine.\n\nSemaines 5-6 : Haltères moyens (5-10 kg). Introduire hip thrust avec haltère, rowing penché.\n\nSemaines 7-8 : Barre pour squat et deadlift (10-20 kg). Tu es prête pour le niveau intermédiaire.",
+        },
+        {
+          title: "😴 Récupération et sommeil",
+          text: "Le muscle se construit pendant le sommeil (phases de sommeil profond = pic de GH). 7-9h par nuit minimum.\n\nÉtirements post-séance : 5-10 min. Réduisent les courbatures, maintiennent la souplesse, détendent le périnée.\n\nJours de repos : au moins 1-2 jours entre deux séances du même groupe musculaire.",
+        },
+      ],
+      keyPoints: ['La muscu ne masculinise pas — elle sculpte', 'Protéines + sommeil = progression garantie', 'Technique d\'abord, charges après'],
+    },
+  },
+  {
+    id: 'prolapse_leaks',
+    emoji: '💙',
+    title: 'Comprendre fuites, prolapsus, douleurs',
+    subtitle: 'Sans tabou, sans dramatiser',
+    duration: '5 min',
+    color: '#E8A0B8',
+    bg: '#FBEAF0',
+    tag: 'Rééducation',
+    content: {
+      intro: "1 femme sur 3 est concernée par des dysfonctions pelviennes. Ce n'est pas une fatalité. C'est une condition médicale traitable. Voici ce que tu as besoin de savoir.",
+      sections: [
+        {
+          title: "💙 Tu n'es pas seule",
+          text: "33% des femmes souffrent de fuites urinaires. 50% des femmes ayant accouché présentent un prolapsus (même léger). Pourtant 80% n'en parlent jamais à leur médecin, par honte ou ignorance.\n\nCes chiffres te montrent que ce n'est pas un problème rare ou anormal — c'est une condition médicale comme une autre, qui se traite.",
+        },
+        {
+          title: "📖 Le prolapsus expliqué simplement",
+          text: "Quand les muscles du périnée s'affaiblissent, les organes pelviens (vessie, utérus, rectum) peuvent descendre légèrement dans le vagin.\n\nLes symptômes typiques : sensation de boule ou de pression vers le bas, fuites, inconfort lors des rapports.\n\nLe prolapsus est classé en 4 stades. Les stades 1 et 2 (les plus fréquents) se traitent très bien avec la rééducation.",
+        },
+        {
+          title: "✅ Ce qui aide vs ❌ ce qui aggrave",
+          text: "AIDE : Rééducation périnéale avec kiné spécialisée · Exercices de relâchement · Gestion des pressions intra-abdominales · Traiter la constipation · Activités sans impact (natation, yoga, marche)\n\nAGGRAVE : Pousser vers le bas lors de l'effort · Apnée sous charge · Abdominaux hyperpressifs (crunchs) · Surpoids · Toux chronique non traitée",
+        },
+        {
+          title: "⚕️ Les traitements qui existent",
+          text: "1. Kinésithérapie périnéale : remboursée 100% par la Sécu (8 séances en post-partum, plus si nécessaire). Traitement de première intention, efficace à 70%.\n\n2. Pessaires : dispositif médical inséré dans le vagin pour soutenir les organes. Très efficace pour maintenir une activité physique.\n\n3. Chirurgie : dernier recours, seulement pour les stades avancés. Les techniques actuelles ont de très bons résultats.",
+        },
+        {
+          title: "🌟 Elles ont récupéré",
+          text: "\"Après mon 2e accouchement, je fuyais en riant ou en toussant. 6 mois de kiné périnéale et je cours un 10km sans problème.\" — Marine, 34 ans\n\n\"Mon prolapsus stade 2 s'est complètement stabilisé avec la rééducation et les exercices SENSIA. Je n'ai plus aucun symptôme.\" — Camille, 41 ans\n\n\"J'ai mis 2 ans à en parler à mon médecin. La honte m'a retardée. Ne faites pas comme moi.\" — Isabelle, 52 ans",
+        },
+      ],
+      keyPoints: ['La rééducation est efficace et remboursée', 'Parler à un professionnel : acte de courage, pas de faiblesse', 'Ces problèmes se traitent — tu n\'as pas à subir'],
+    },
+  },
 ];
 
 const TAG_COLORS = {
@@ -273,6 +341,8 @@ const TAG_COLORS = {
   'Vacuum':       { bg:'#EDE6F4', color:'#7B5EA7' },
   'Santé':        { bg:'#EEF2FF', color:'#8BA7FF' },
   'Cycle':        { bg:'#E6FBF3', color:'#3DD68C' },
+  'Débutante':    { bg:'#E0F2EC', color:'#4A9B7F' },
+  'Rééducation':  { bg:'#FBEAF0', color:'#E8A0B8' },
 };
 
 export default function LearnScreen() {
@@ -295,7 +365,7 @@ export default function LearnScreen() {
         <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 30, color: '#2C2118', fontWeight: 400, marginBottom: 4 }}>
           Apprendre
         </h1>
-        <p style={{ fontSize: 14, color: '#9C8A78' }}>8 modules · ~25 min au total</p>
+        <p style={{ fontSize: 14, color: '#9C8A78' }}>{MODULES.length} modules · ~35 min au total</p>
       </div>
 
       {/* Featured module */}

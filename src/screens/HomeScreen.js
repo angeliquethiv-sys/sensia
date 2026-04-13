@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import { PROFILES, getDailyAffirmation } from '../data/profiles';
+import { useProfile } from '../context/ProfileContext';
 
 const QUICK_SESSION = {
   energy: [
@@ -44,6 +45,7 @@ const PROGRESS = [
 
 export default function HomeScreen() {
   const navigate = useNavigate();
+  const { profileId, profileBadge, dailyExercise } = useProfile();
   const [profile, setProfile] = useState({ firstName: 'Léa', beltConnected: true });
   const [breathPhase, setBreathPhase] = useState('inspire');
   const [breathScale, setBreathScale] = useState(1);
@@ -180,12 +182,13 @@ export default function HomeScreen() {
             </h2>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
-              background: 'rgba(155,141,200,.2)',
-              borderRadius: 50, padding: '5px 12px',
+              background: 'rgba(255,255,255,.18)',
+              borderRadius: 50, padding: '5px 14px',
+              border: '1px solid rgba(255,255,255,.2)',
             }}>
-              <span style={{ fontSize: 11, color: 'rgba(255,255,255,.75)', fontWeight: 600 }}>Post-partum</span>
-              <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(155,141,200,.5)' }}/>
-              <span style={{ fontSize: 11, color: 'rgba(155,141,200,.9)', fontWeight: 600 }}>Semaine 8</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#fff', letterSpacing: '0.03em' }}>
+                {profileBadge.label}
+              </span>
             </div>
           </div>
 
@@ -235,13 +238,13 @@ export default function HomeScreen() {
             fontFamily: 'var(--font-heading)',
             fontSize: 20, color: '#fff', fontWeight: 400,
           }}>
-            Pont fessier guidé
-            <span style={{ fontSize: 13, color: 'rgba(155,141,200,.9)', fontWeight: 400, marginLeft: 8 }}>18 min</span>
+            {dailyExercise.icon} {dailyExercise.title}
+            <span style={{ fontSize: 13, color: 'rgba(155,141,200,.9)', fontWeight: 400, marginLeft: 8 }}>{dailyExercise.duration}</span>
           </p>
         </div>
 
         <button
-          onClick={() => navigate('/session')}
+          onClick={() => navigate(dailyExercise.route)}
           style={{
             width: '100%', padding: '15px',
             borderRadius: 50,
@@ -255,6 +258,63 @@ export default function HomeScreen() {
         >
           <span>▶</span> Commencer la séance du jour
         </button>
+      </div>
+
+      {/* ── PROFILE-SPECIFIC CARDS ── */}
+      <div style={{ padding: '12px 16px 0' }}>
+
+        {/* Postpartum: programme alert */}
+        {profileId === 'postpartum' && (
+          <div style={{ background: '#E0F2EC', borderRadius: 18, padding: '14px 16px', marginBottom: 12, border: '1.5px solid #4A9B7F40', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 24, flexShrink: 0 }}>🌱</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: '#2C7A5E', marginBottom: 2 }}>Reprise post-partum</p>
+              <p style={{ fontSize: 12, color: '#4A9B7F' }}>Programme Semaine {profileBadge.label.split(' ')[3]}/12 · Exercices adaptés sélectionnés</p>
+            </div>
+          </div>
+        )}
+
+        {/* Injured: bad day button + alert */}
+        {profileId === 'injured' && (
+          <>
+            <button
+              onClick={() => navigate('/bad-day')}
+              style={{ width: '100%', padding: '14px 18px', borderRadius: 18, border: 'none', cursor: 'pointer', background: 'linear-gradient(135deg,#FBEAF0,#F4D0E0)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 12, boxShadow: '0 4px 14px rgba(232,160,184,.2)', textAlign: 'left' }}
+            >
+              <span style={{ fontSize: 26, flexShrink: 0 }}>🌸</span>
+              <div>
+                <p style={{ fontSize: 14, fontWeight: 700, color: '#C0607A' }}>Mode Mauvais Jour</p>
+                <p style={{ fontSize: 12, color: '#E8A0B8' }}>Séance 5 min ultra-douce · Rien de difficile</p>
+              </div>
+            </button>
+            <div style={{ background: '#FFF3E0', borderRadius: 16, padding: '12px 14px', marginBottom: 10, border: '1.5px solid #FFC27040', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+              <span style={{ fontSize: 16, flexShrink: 0 }}>⚠️</span>
+              <p style={{ fontSize: 12, color: '#A05A00', lineHeight: 1.6 }}>Si tu ressens une douleur ou une pression vers le bas pendant les exercices, arrête et consulte ta kiné périnéale.</p>
+            </div>
+          </>
+        )}
+
+        {/* Beginner: conseil technique du jour */}
+        {profileId === 'beginner' && (
+          <div style={{ background: '#EDE6F4', borderRadius: 18, padding: '14px 16px', marginBottom: 12, border: '1.5px solid #A689C430' }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: '#7B5EA7', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>⚡ Conseil technique du jour</p>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#2C2118', marginBottom: 4 }}>Pour le squat</p>
+            <p style={{ fontSize: 12, color: '#6B5744', lineHeight: 1.6 }}>Garde le dos droit, les genoux dans l'axe des orteils. Expire en remontant et contracte légèrement le périnée.</p>
+            <p style={{ fontSize: 11, color: '#A689C4', marginTop: 8, fontWeight: 600 }}>✗ Erreur courante : regarder ses pieds au lieu d'un point fixe devant soi.</p>
+          </div>
+        )}
+
+        {/* Intermediate: ceinture encart */}
+        {profileId === 'intermediate' && (
+          <div style={{ background: '#F5EDE2', borderRadius: 18, padding: '14px 16px', marginBottom: 12, border: '1.5px solid #C4986A40', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <span style={{ fontSize: 24, flexShrink: 0 }}>⌚</span>
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, color: '#2C2118', marginBottom: 4 }}>La ceinture surveille ta respiration</p>
+              <p style={{ fontSize: 12, color: '#6B5744', lineHeight: 1.6 }}>Pendant les charges lourdes, la ceinture SENSIA détecte si tu bloques ta respiration (Valsalva). Chaque blocage détecté est une alerte pour protéger ton périnée.</p>
+            </div>
+          </div>
+        )}
+
       </div>
 
       <div style={{ padding: '0 16px' }}>
