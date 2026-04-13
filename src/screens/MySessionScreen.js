@@ -9,17 +9,16 @@ const FILTERS = [
   ...CATEGORIES.map(c => ({ id: c.id, label: c.label, emoji: c.emoji })),
 ];
 
-const UNSPLASH_BY_CAT = {
-  lower_body: 'glutes,fitness,workout',
-  upper_body: 'strength,upper,workout',
-  perineum:   'yoga,pelvic,wellness',
-  breathing:  'meditation,breathe,calm',
-  core:       'plank,core,fitness',
-  vacuum:     'core,vacuum,stomach,fitness',
-  stretching: 'stretch,yoga,flexibility',
+// Direct Unsplash photo URLs (source.unsplash.com is deprecated)
+const CATEGORY_PHOTOS = {
+  lower_body: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop',
+  upper_body: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&h=200&fit=crop',
+  perineum:   'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=300&h=200&fit=crop',
+  breathing:  'https://images.unsplash.com/photo-1545389336-cf090694435e?w=300&h=200&fit=crop',
+  core:       'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=300&h=200&fit=crop',
+  vacuum:     'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=200&fit=crop',
+  stretching: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=200&fit=crop',
 };
-
-const UNSPLASH = UNSPLASH_BY_CAT;
 
 export default function MySessionScreen() {
   const navigate = useNavigate();
@@ -230,7 +229,7 @@ export default function MySessionScreen() {
               {/* Unsplash image */}
               <div style={{ width: '100%', height: 110, overflow: 'hidden', position: 'relative' }}>
                 <img
-                  src={`https://source.unsplash.com/300x200/?${UNSPLASH[ex.category] || 'fitness'}`}
+                  src={CATEGORY_PHOTOS[ex.category] || CATEGORY_PHOTOS.core}
                   alt={ex.name}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={e => { e.target.style.display = 'none'; }}
@@ -354,7 +353,7 @@ export default function MySessionScreen() {
             {/* Exercise header with image */}
             <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', height: 160 }}>
               <img
-                src={`https://source.unsplash.com/600x300/?${UNSPLASH[selectedEx.category]}`}
+                src={CATEGORY_PHOTOS[selectedEx.category] || CATEGORY_PHOTOS.core}
                 alt={selectedEx.name}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={e => { e.target.style.background = catMeta?.bg; e.target.style.display = 'none'; }}

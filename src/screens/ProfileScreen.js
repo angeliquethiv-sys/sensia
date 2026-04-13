@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
-import { PROFILES, BADGES, CHALLENGES } from '../data/profiles';
+import { PROFILES, BADGES, CHALLENGES } from '../data/profiles'; // getDailyAffirmation removed (unused)
 
 export default function ProfileScreen() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function ProfileScreen() {
       const profileId = p.profileType || 'postpartum';
       const profile = PROFILES[profileId] || PROFILES.postpartum;
       setProfileData({ ...p, ...profile });
-      setName(p.name || 'Mon prénom');
+      setName(p.name || 'Angélique');
 
       const completed = JSON.parse(localStorage.getItem('sensia_completed') || '{}');
       const sessionCount = Object.keys(completed).length;

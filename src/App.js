@@ -8,6 +8,7 @@ import ExerciseSessionScreen from './screens/ExerciseSessionScreen';
 import SessionScreen         from './screens/SessionScreen';
 import LearnScreen           from './screens/LearnScreen';
 import ProfileScreen         from './screens/ProfileScreen';
+import PlaylistScreen        from './screens/PlaylistScreen';
 
 function App() {
   const hasProfile = Boolean(localStorage.getItem('sensia_profile'));
@@ -21,6 +22,7 @@ function App() {
         <Route path="/exercise/:id" element={<ExerciseSessionScreen />} />
         <Route path="/session"      element={<SessionScreen />} />
         <Route path="/learn"        element={<LearnScreen />} />
+        <Route path="/playlist"     element={<PlaylistScreen />} />
         <Route path="/profile"      element={<ProfileScreen />} />
         <Route path="/"
           element={hasProfile

@@ -3,48 +3,49 @@ import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 
 const CATEGORIES = [
-  { id: 'sleep',      label: 'Sommeil',    emoji: '🌙', color: '#7B6BA8' },
-  { id: 'relax',      label: 'Détente',    emoji: '🌸', color: '#C49A9A' },
-  { id: 'energy',     label: 'Douceur',    emoji: '🌿', color: '#8BAD8B' },
-  { id: 'meditation', label: 'Méditation', emoji: '✨', color: '#9B8DC8' },
+  { id: 'zen',        label: 'Zen',        emoji: '🧘', color: '#9B8DC8' },
+  { id: 'motivation', label: 'Motivation', emoji: '⚡', color: '#C4986A' },
+  { id: 'nature',     label: 'Nature',     emoji: '🌿', color: '#4A9B7F' },
+  { id: 'favoris',    label: 'Favoris',    emoji: '💜', color: '#A689C4' },
 ];
 
 const SONGS = {
-  sleep: [
+  zen: [
     { id: 1, title: 'Douceur du soir',       artist: 'Luna & Co',   duration: '4:32', emoji: '🌙', bpm: '60' },
     { id: 2, title: 'Berceuse étoilée',       artist: 'Zen Flow',    duration: '5:14', emoji: '⭐', bpm: '55' },
-    { id: 3, title: 'Nuit de velours',        artist: 'Sophie M.',   duration: '3:58', emoji: '🌸', bpm: '58' },
-    { id: 4, title: 'Rêves dorés',            artist: 'Harmonie',    duration: '6:22', emoji: '✨', bpm: '52' },
-    { id: 5, title: 'Murmures nocturnes',     artist: 'Luna & Co',   duration: '4:47', emoji: '🌿', bpm: '56' },
+    { id: 3, title: 'Souffle profond',        artist: 'Mindful',     duration: '6:30', emoji: '💨', bpm: '48' },
+    { id: 4, title: 'Présence totale',        artist: 'Mindful',     duration: '8:00', emoji: '🧘', bpm: '45' },
+    { id: 5, title: 'Ancrage profond',        artist: 'Terra',       duration: '10:00', emoji: '🌍', bpm: '42' },
     { id: 6, title: 'Silence apaisé',         artist: 'Deep Rest',   duration: '7:10', emoji: '🌑', bpm: '50' },
   ],
-  relax: [
-    { id: 7,  title: 'Doux matin',            artist: 'Sérénité',    duration: '4:15', emoji: '☀️', bpm: '70' },
-    { id: 8,  title: 'Vague de calme',        artist: 'Océan Doux',  duration: '5:30', emoji: '🌊', bpm: '65' },
-    { id: 9,  title: 'Caresse du vent',       artist: 'Nature & Co', duration: '3:44', emoji: '🍃', bpm: '72' },
-    { id: 10, title: 'Cocon de soie',         artist: 'Sérénité',    duration: '4:58', emoji: '🌺', bpm: '68' },
-    { id: 11, title: 'Après la pluie',        artist: 'Zen Flow',    duration: '5:02', emoji: '🌧️', bpm: '66' },
-    { id: 12, title: 'Lumière tendre',        artist: 'Harmonie',    duration: '4:27', emoji: '🕯️', bpm: '70' },
+  motivation: [
+    { id: 7,  title: 'Énergie du matin',      artist: 'Boost',       duration: '3:45', emoji: '☀️', bpm: '128' },
+    { id: 8,  title: 'Force intérieure',      artist: 'Power Up',    duration: '4:10', emoji: '⚡', bpm: '132' },
+    { id: 9,  title: 'Champion·ne',           artist: 'Élan',        duration: '3:55', emoji: '🏆', bpm: '125' },
+    { id: 10, title: 'Sans limites',          artist: 'Fuel',        duration: '4:20', emoji: '🔥', bpm: '130' },
+    { id: 11, title: 'Dépasser ses peurs',    artist: 'Rise Up',     duration: '4:05', emoji: '💪', bpm: '126' },
+    { id: 12, title: 'En avant',              artist: 'Power Up',    duration: '3:30', emoji: '🚀', bpm: '135' },
   ],
-  energy: [
-    { id: 13, title: 'Premier souffle',       artist: 'Élan',        duration: '3:55', emoji: '🌱', bpm: '80' },
-    { id: 14, title: 'Éveil doux',            artist: 'Morning Dew', duration: '4:10', emoji: '🌿', bpm: '78' },
-    { id: 15, title: 'Fleur de vie',          artist: 'Élan',        duration: '3:32', emoji: '🌸', bpm: '82' },
-    { id: 16, title: 'Légèreté retrouvée',    artist: 'Lumière',     duration: '4:48', emoji: '🦋', bpm: '76' },
-    { id: 17, title: 'Petits pas',            artist: 'Morning Dew', duration: '3:20', emoji: '👣', bpm: '84' },
+  nature: [
+    { id: 13, title: 'Forêt de bouleaux',     artist: 'Nature & Co', duration: '5:00', emoji: '🌲', bpm: '65' },
+    { id: 14, title: 'Pluie douce',           artist: 'Orage Doux',  duration: '6:15', emoji: '🌧️', bpm: '60' },
+    { id: 15, title: 'Vagues de l\'océan',    artist: 'Océan Doux',  duration: '7:30', emoji: '🌊', bpm: '55' },
+    { id: 16, title: 'Chant des oiseaux',     artist: 'Forêt',       duration: '4:45', emoji: '🐦', bpm: '62' },
+    { id: 17, title: 'Rivière apaisante',     artist: 'Nature & Co', duration: '8:00', emoji: '💧', bpm: '58' },
+    { id: 18, title: 'Vent dans les pins',    artist: 'Forêt',       duration: '5:30', emoji: '🍃', bpm: '64' },
   ],
-  meditation: [
-    { id: 18, title: 'Présence totale',       artist: 'Mindful',     duration: '8:00', emoji: '🧘', bpm: '45' },
-    { id: 19, title: 'Ancrage profond',       artist: 'Terra',       duration: '10:00', emoji: '🌍', bpm: '42' },
-    { id: 20, title: 'Souffle intérieur',     artist: 'Mindful',     duration: '6:30', emoji: '💨', bpm: '48' },
-    { id: 21, title: 'Lumière intérieure',    artist: 'Lumière',     duration: '7:15', emoji: '✨', bpm: '44' },
-    { id: 22, title: 'Ocean of Stillness',    artist: 'Deep Terra',  duration: '12:00', emoji: '🌊', bpm: '40' },
+  favoris: [
+    { id: 19, title: 'Douceur du soir',       artist: 'Luna & Co',   duration: '4:32', emoji: '🌙', bpm: '60' },
+    { id: 20, title: 'Force intérieure',      artist: 'Power Up',    duration: '4:10', emoji: '⚡', bpm: '132' },
+    { id: 21, title: 'Vagues de l\'océan',    artist: 'Océan Doux',  duration: '7:30', emoji: '🌊', bpm: '55' },
   ],
 };
 
 export default function PlaylistScreen() {
+  // navigate kept for future use
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
-  const [category, setCategory] = useState('sleep');
+  const [category, setCategory] = useState('zen');
   const [playingId, setPlayingId] = useState(null);
   const [progress, setProgress] = useState(0);
   const [elapsed, setElapsed] = useState(0);
