@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
+import { PROFILES, getDailyAffirmation } from '../data/profiles';
+
+const QUICK_SESSION = {
+  energy: [
+    { id:'high',   label:'Énergique',  emoji:'⚡', color:'#F0B429' },
+    { id:'normal', label:'Normale',    emoji:'😊', color:'#9B8DC8' },
+    { id:'low',    label:'Fatiguée',   emoji:'🌙', color:'#8BA7FF' },
+  ],
+  time: [
+    { id:'10', label:'10 min', emoji:'⚡' },
+    { id:'20', label:'20 min', emoji:'🔥' },
+    { id:'45', label:'45 min', emoji:'💪' },
+  ],
+  focus: [
+    { id:'perineum',    label:'Périnée',      emoji:'💜', route:'/my-session' },
+    { id:'lower',       label:'Bas du corps', emoji:'🦵', route:'/my-session' },
+    { id:'upper',       label:'Haut du corps',emoji:'💪', route:'/my-session' },
+    { id:'full',        label:'Tout le corps',emoji:'🌟', route:'/program' },
+    { id:'breathing',   label:'Respiration',  emoji:'🌬️',route:'/session' },
+  ],
+};
 
 const SESSIONS = [
   { id: 1, title: 'Respiration abdominale',  duration: '12 min', status: 'done',       icon: '🌬️' },
@@ -24,15 +45,28 @@ const PROGRESS = [
 export default function HomeScreen() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({ firstName: 'Léa', beltConnected: true });
-  const [breathPhase, setBreathPhase] = useState('inspire'); // inspire | expire
+  const [breathPhase, setBreathPhase] = useState('inspire');
   const [breathScale, setBreathScale] = useState(1);
+  const [showQuickSession, setShowQuickSession] = useState(false);
+  const [qsStep, setQsStep] = useState(0); // 0,1,2
+  const [qsEnergy, setQsEnergy] = useState(null);
+  const [qsTime, setQsTime] = useState(null);
+  const [qsFocus, setQsFocus] = useState(null);
+  const [profileMeta, setProfileMeta] = useState(null);
+  const [affirmation, setAffirmation] = useState('');
+  const [cycleActive, setCycleActive] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('sensia_profile');
     if (saved) {
       const p = JSON.parse(saved);
       setProfile(p);
+      const profileId = p.profileType || 'postpartum';
+      setProfileMeta(PROFILES[profileId] || PROFILES.postpartum);
+      setAffirmation(getDailyAffirmation(profileId));
     }
+    const cycle = localStorage.getItem('sensia_cycle');
+    if (cycle) setCycleActive(true);
   }, []);
 
   /* Cercle respiratoire hero simplifié */
@@ -58,12 +92,18 @@ export default function HomeScreen() {
     return () => clearTimeout(timer);
   }, []);
 
+  const launchQuickSession = () => {
+    if (!qsFocus) return;
+    setShowQuickSession(false);
+    navigate(qsFocus.route, { state: { quickSession: { energy: qsEnergy?.id, time: qsTime?.id, focus: qsFocus.id } } });
+  };
+
   const hour = new Date().getHours();
   const greet = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
-  const name  = profile.firstName || 'Léa';
+  const name  = profile.firstName || profile.name || 'toi';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F5EFE6', paddingBottom: 90 }}>
+    <div style={{ minHeight: '100vh', background: '#F3EDE5', paddingBottom: 100, fontFamily: "'DM Sans', sans-serif" }}>
 
       {/* ── HEADER ── */}
       <div style={{
@@ -253,6 +293,54 @@ export default function HomeScreen() {
               }} />
             ))}
           </div>
+        </div>
+
+        {/* ── AFFIRMATION DU JOUR ── */}
+        {affirmation && (
+          <div style={{
+            background: profileMeta ? `${profileMeta.color}18` : 'rgba(123,94,167,.1)',
+            borderRadius: 20, padding: '14px 18px', marginBottom: 14,
+            border: `1.5px solid ${profileMeta?.color || '#7B5EA7'}30`,
+          }}>
+            <p style={{ fontSize: 10, color: profileMeta?.color || '#7B5EA7', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+              ✨ Affirmation du jour
+            </p>
+            <p style={{ fontFamily: 'var(--font-heading)', fontSize: 16, color: '#2C2118', lineHeight: 1.5, fontStyle: 'italic' }}>
+              "{affirmation}"
+            </p>
+          </div>
+        )}
+
+        {/* ── GÉNÉRER MA SÉANCE ── */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
+          <button
+            onClick={() => { setShowQuickSession(true); setQsStep(0); setQsEnergy(null); setQsTime(null); setQsFocus(null); }}
+            style={{
+              flex: 1, padding: '14px 16px', borderRadius: 20, border: 'none', cursor: 'pointer',
+              background: 'linear-gradient(135deg,#7B5EA7,#4A3669)',
+              color: '#fff', textAlign: 'left',
+              boxShadow: '0 6px 20px rgba(123,94,167,.3)',
+            }}
+          >
+            <div style={{ fontSize: 20, marginBottom: 4 }}>⚡</div>
+            <div style={{ fontSize: 13, fontWeight: 700 }}>Générer ma séance</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,.65)' }}>3 questions, 2 secondes</div>
+          </button>
+          <button
+            onClick={() => { const c = !cycleActive; setCycleActive(c); if (!c) localStorage.removeItem('sensia_cycle'); else localStorage.setItem('sensia_cycle', '1'); }}
+            style={{
+              width: 90, padding: '14px 10px', borderRadius: 20, cursor: 'pointer',
+              background: cycleActive ? 'rgba(139,167,255,.2)' : 'rgba(255,255,255,.85)',
+              border: cycleActive ? '1.5px solid rgba(139,167,255,.5)' : '1.5px solid rgba(232,228,240,.8)',
+              textAlign: 'center',
+              boxShadow: '0 2px 10px rgba(74,54,105,.07)',
+            }}
+          >
+            <div style={{ fontSize: 22, marginBottom: 4 }}>🌙</div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: cycleActive ? '#8BA7FF' : '#9C8A78' }}>
+              {cycleActive ? 'Cycle ON' : 'Mon cycle'}
+            </div>
+          </button>
         </div>
 
         {/* ── STATS ── */}
@@ -453,6 +541,67 @@ export default function HomeScreen() {
       </div>
 
       <BottomNav />
+
+      {/* ── QUICK SESSION MODAL ── */}
+      {showQuickSession && (
+        <div
+          style={{ position:'fixed', inset:0, zIndex:400, background:'rgba(26,16,48,.7)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)', display:'flex', alignItems:'flex-end' }}
+          onClick={() => setShowQuickSession(false)}
+        >
+          <div
+            style={{ width:'100%', maxWidth:430, margin:'0 auto', background:'#F3EDE5', borderRadius:'28px 28px 0 0', padding:'8px 20px 40px', animation:'slideUp .3s ease-out', fontFamily:"'DM Sans', sans-serif" }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{ width:36, height:4, background:'rgba(155,141,200,.4)', borderRadius:2, margin:'12px auto 20px' }} />
+            <h3 style={{ fontFamily:'var(--font-heading)', fontSize:26, color:'#2C2118', fontWeight:400, marginBottom:4 }}>Génère ta séance</h3>
+            <p style={{ fontSize:13, color:'#9C8A78', marginBottom:20 }}>
+              {qsStep === 0 ? 'Comment tu te sens ?' : qsStep === 1 ? 'Tu as combien de temps ?' : 'Tu veux travailler quoi ?'}
+            </p>
+
+            {qsStep === 0 && (
+              <div style={{ display:'flex', gap:10, marginBottom:20 }}>
+                {QUICK_SESSION.energy.map(e => (
+                  <button key={e.id} onClick={() => { setQsEnergy(e); setQsStep(1); }}
+                    style={{ flex:1, padding:'14px 8px', borderRadius:18, border:`2px solid ${qsEnergy?.id===e.id ? e.color : 'rgba(196,152,106,.2)'}`, background:qsEnergy?.id===e.id ? `${e.color}20` : '#FDFBF8', cursor:'pointer', textAlign:'center' }}>
+                    <div style={{ fontSize:24, marginBottom:4 }}>{e.emoji}</div>
+                    <div style={{ fontSize:12, fontWeight:700, color:'#2C2118' }}>{e.label}</div>
+                  </button>
+                ))}
+              </div>
+            )}
+            {qsStep === 1 && (
+              <div style={{ display:'flex', gap:10, marginBottom:20 }}>
+                {QUICK_SESSION.time.map(t => (
+                  <button key={t.id} onClick={() => { setQsTime(t); setQsStep(2); }}
+                    style={{ flex:1, padding:'14px 8px', borderRadius:18, border:`2px solid ${qsTime?.id===t.id ? '#7B5EA7' : 'rgba(196,152,106,.2)'}`, background:qsTime?.id===t.id ? 'rgba(123,94,167,.1)' : '#FDFBF8', cursor:'pointer', textAlign:'center' }}>
+                    <div style={{ fontSize:22, marginBottom:4 }}>{t.emoji}</div>
+                    <div style={{ fontSize:13, fontWeight:700, color:'#2C2118' }}>{t.label}</div>
+                  </button>
+                ))}
+              </div>
+            )}
+            {qsStep === 2 && (
+              <>
+                <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:20 }}>
+                  {QUICK_SESSION.focus.map(f => (
+                    <button key={f.id} onClick={() => setQsFocus(f)}
+                      style={{ padding:'10px 16px', borderRadius:50, border:`2px solid ${qsFocus?.id===f.id ? '#7B5EA7' : 'rgba(196,152,106,.2)'}`, background:qsFocus?.id===f.id ? 'rgba(123,94,167,.12)' : '#FDFBF8', cursor:'pointer', fontSize:13, fontWeight:700, color:'#2C2118' }}>
+                      {f.emoji} {f.label}
+                    </button>
+                  ))}
+                </div>
+                <button onClick={launchQuickSession}
+                  style={{ width:'100%', padding:'16px', borderRadius:50, background:'linear-gradient(135deg,#7B5EA7,#4A3669)', color:'#fff', fontSize:15, fontWeight:700, border:'none', cursor:'pointer', opacity:qsFocus ? 1 : 0.4, boxShadow:'0 8px 26px rgba(123,94,167,.4)' }}>
+                  ▶ Lancer ma séance
+                </button>
+              </>
+            )}
+            {qsStep > 0 && (
+              <button onClick={() => setQsStep(s => s-1)} style={{ marginTop:12, background:'none', border:'none', color:'#9C8A78', fontSize:13, cursor:'pointer', width:'100%', textAlign:'center' }}>← Retour</button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

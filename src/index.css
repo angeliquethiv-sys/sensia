@@ -1,25 +1,47 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* Couleurs principales */
+  --bg-main: #F3EDE5;
+  --bg-card: #FAF7F3;
+  --bg-white: #FDFBF8;
+
+  /* Violet */
+  --violet-deep: #4A3669;
+  --violet-hero: #2D1F4A;
+  --violet: #7B5EA7;
+  --violet-light: #A689C4;
+  --violet-pale: #EDE6F4;
+
+  /* Texte */
+  --text-dark: #2C2118;
+  --text-medium: #6B5744;
+  --text-light: #9C8A78;
+
+  /* Accents */
+  --gold: #C4986A;
+  --gold-light: #E8B47E;
+  --teal: #4A9B7F;
+  --green: #3DD68C;
+  --alert: #E05252;
+  --blue: #8BA7FF;
+
+  /* Compatibilité ancien code */
   --dark-violet: #4A3669;
   --deep-violet: #2D1F4A;
-  --violet: #7B6BA8;
-  --violet-light: #9B8DC8;
-  --violet-pale: #E8E4F0;
-  --gold: #F0B429;
-  --gold-light: #FFF3CC;
-  --teal: #00C4B0;
-  --teal-light: #E0FBF8;
-  --green: #3DD68C;
-  --beige: #F5EFE6;
-  --nude: #EDE0D4;
-  --white: #FEFEFE;
-  --text-dark: #1A1030;
-  --text-medium: #5A4B7A;
-  --text-light: #9B8DC8;
+  --beige: #F3EDE5;
+  --nude: #EDE6F4;
+  --white: #FDFBF8;
+
+  /* Typography */
   --font-heading: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Nunito', 'Helvetica Neue', sans-serif;
+  --font-body: 'DM Sans', 'Helvetica Neue', sans-serif;
+  --font-mono: 'DM Mono', monospace;
 }
+
+/* Scrollbar hide utility */
+.hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
 
 html, body { height: 100%; width: 100%; overflow-x: hidden; }
 
@@ -35,7 +57,7 @@ body {
   min-height: 100vh;
   max-width: 430px;
   margin: 0 auto;
-  background: var(--beige);
+  background: var(--bg-main);
   position: relative;
   overflow-x: hidden;
   box-shadow: 0 0 80px rgba(0,0,0,0.5);

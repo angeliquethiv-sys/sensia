@@ -9,14 +9,17 @@ const FILTERS = [
   ...CATEGORIES.map(c => ({ id: c.id, label: c.label, emoji: c.emoji })),
 ];
 
-const UNSPLASH = {
+const UNSPLASH_BY_CAT = {
   lower_body: 'glutes,fitness,workout',
-  upper_body: 'strength,upper,body',
+  upper_body: 'strength,upper,workout',
   perineum:   'yoga,pelvic,wellness',
   breathing:  'meditation,breathe,calm',
   core:       'plank,core,fitness',
+  vacuum:     'core,vacuum,stomach,fitness',
   stretching: 'stretch,yoga,flexibility',
 };
+
+const UNSPLASH = UNSPLASH_BY_CAT;
 
 export default function MySessionScreen() {
   const navigate = useNavigate();
