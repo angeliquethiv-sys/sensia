@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import OnboardingScreen      from './screens/OnboardingScreen';
+import HomeScreen            from './screens/HomeScreen';
+import ProgramScreen         from './screens/ProgramScreen';
+import MySessionScreen       from './screens/MySessionScreen';
+import ExerciseSessionScreen from './screens/ExerciseSessionScreen';
+import SessionScreen         from './screens/SessionScreen';
 
 function App() {
+  const hasProfile = Boolean(localStorage.getItem('sensia_profile'));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/onboarding"      element={<OnboardingScreen />} />
+        <Route path="/home"            element={<HomeScreen />} />
+        <Route path="/program"         element={<ProgramScreen />} />
+        <Route path="/my-session"      element={<MySessionScreen />} />
+        <Route path="/exercise/:id"    element={<ExerciseSessionScreen />} />
+        <Route path="/session"         element={<SessionScreen />} />
+        <Route path="/"
+          element={hasProfile
+            ? <Navigate to="/home" replace />
+            : <Navigate to="/onboarding" replace />}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

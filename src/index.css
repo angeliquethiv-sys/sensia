@@ -1,13 +1,109 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --dark-violet: #4A3669;
+  --deep-violet: #2D1F4A;
+  --violet: #7B6BA8;
+  --violet-light: #9B8DC8;
+  --violet-pale: #E8E4F0;
+  --gold: #F0B429;
+  --gold-light: #FFF3CC;
+  --teal: #00C4B0;
+  --teal-light: #E0FBF8;
+  --green: #3DD68C;
+  --beige: #F5EFE6;
+  --nude: #EDE0D4;
+  --white: #FEFEFE;
+  --text-dark: #1A1030;
+  --text-medium: #5A4B7A;
+  --text-light: #9B8DC8;
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Nunito', 'Helvetica Neue', sans-serif;
+}
+
+html, body { height: 100%; width: 100%; overflow-x: hidden; }
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-body);
+  background: #1A1030;
+  color: var(--text-dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  background: var(--beige);
+  position: relative;
+  overflow-x: hidden;
+  box-shadow: 0 0 80px rgba(0,0,0,0.5);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+button { font-family: var(--font-body); cursor: pointer; border: none; outline: none; -webkit-tap-highlight-color: transparent; }
+input  { font-family: var(--font-body); outline: none; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--violet-pale); border-radius: 10px; }
+
+/* ─── Keyframes ─── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes splashPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.55; }
+  50%       { transform: scale(1.28); opacity: 1; }
+}
+@keyframes splashRing {
+  0%   { transform: scale(1);   opacity: 0.5; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+@keyframes ledGreen {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px #3DD68C; }
+  50%       { opacity: 0.5; box-shadow: 0 0 2px #3DD68C; }
+}
+@keyframes ledViolet {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 8px #9B8DC8, 0 0 16px #9B8DC820; }
+  50%       { opacity: 0.6; box-shadow: 0 0 4px #9B8DC8; }
+}
+@keyframes streakGlow {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 8px rgba(155,141,200,.8); }
+  50%       { transform: scale(1.18); box-shadow: 0 0 18px rgba(155,141,200,1); }
+}
+@keyframes goldGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(240,180,41,.6); }
+  50%       { box-shadow: 0 0 20px rgba(240,180,41,1); }
+}
+@keyframes scanRing {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+@keyframes beltConnecting {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+@keyframes coachAlert {
+  0%, 100% { border-color: rgba(240,180,41,.5); }
+  50%       { border-color: rgba(240,180,41,1); }
+}
+@keyframes scoreFlash {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
