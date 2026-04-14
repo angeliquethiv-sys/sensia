@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import { CATEGORIES, EXERCISES, DIFF_META, getCategoryMeta } from '../data/exercises';
+import { getExerciseImage } from '../data/exerciseImages';
 import { useProfile } from '../context/ProfileContext';
 import { isExerciseRestricted } from '../data/profiles';
 
@@ -11,38 +12,6 @@ const FILTERS = [
   ...CATEGORIES.map(c => ({ id: c.id, label: c.label, emoji: c.emoji })),
 ];
 
-// Per-category fallback photos
-const CATEGORY_PHOTOS = {
-  lower_body: 'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=300&h=200&fit=crop',
-  upper_body: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop',
-  perineum:   'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=300&h=200&fit=crop',
-  breathing:  'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=200&fit=crop',
-  core:       'https://images.unsplash.com/photo-1598971639058-fab3c3109a40?w=300&h=200&fit=crop',
-  vacuum:     'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=300&h=200&fit=crop',
-  stretching: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=300&h=200&fit=crop',
-};
-
-// Per-exercise specific photos
-const EXERCISE_PHOTOS = {
-  squat:              'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=300&h=200&fit=crop',
-  squat_barre:        'https://images.unsplash.com/photo-1566241142559-40e1dab266c6?w=300&h=200&fit=crop',
-  hip_thrust:         'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop',
-  hip_thrust_uni:     'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop',
-  lunge:              'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=300&h=200&fit=crop',
-  bulgarian_split:    'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=300&h=200&fit=crop',
-  leg_press:          'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&h=200&fit=crop',
-  glute_bridge:       'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=300&h=200&fit=crop',
-  bench_press_bar:    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop',
-  barbell_row:        'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=300&h=200&fit=crop',
-  bicep_curl:         'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&h=200&fit=crop',
-  lateral_raise:      'https://images.unsplash.com/photo-1590487988256-9ed24133863e?w=300&h=200&fit=crop',
-  plank_elbows:       'https://images.unsplash.com/photo-1598971639058-fab3c3109a40?w=300&h=200&fit=crop',
-  plank_hands:        'https://images.unsplash.com/photo-1598971639058-fab3c3109a40?w=300&h=200&fit=crop',
-  kegel_basic:        'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=300&h=200&fit=crop',
-  diaphragm_breath:   'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=200&fit=crop',
-  stretching_hip:     'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=300&h=200&fit=crop',
-  stretching_lumbar:  'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=300&h=200&fit=crop',
-};
 
 // Exercices lourds qui nécessitent analyse ceinture (intermédiaire)
 const HEAVY_LIFTS = ['squat', 'squat_barre', 'squat_goblet', 'squat_sumo_barre', 'rdl_barre', 'deadlift', 'hip_thrust', 'hip_thrust_uni', 'leg_press', 'hack_squat'];
@@ -272,7 +241,7 @@ export default function MySessionScreen() {
               {/* Exercise image */}
               <div style={{ width: '100%', height: 110, overflow: 'hidden', position: 'relative' }}>
                 <img
-                  src={EXERCISE_PHOTOS[ex.id] || CATEGORY_PHOTOS[ex.category] || CATEGORY_PHOTOS.core}
+                  src={getExerciseImage(ex.id)}
                   alt={ex.name}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={e => { e.target.style.display = 'none'; }}
@@ -431,7 +400,7 @@ export default function MySessionScreen() {
             {/* Exercise header with image */}
             <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', height: 160 }}>
               <img
-                src={CATEGORY_PHOTOS[selectedEx.category] || CATEGORY_PHOTOS.core}
+                src={getExerciseImage(selectedEx.id)}
                 alt={selectedEx.name}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={e => { e.target.style.background = catMeta?.bg; e.target.style.display = 'none'; }}
