@@ -5,7 +5,7 @@ const LED = { ok:'#5DCAA5', inspire:'#85B7EB', expire:'#EF9F27' };
 
 export default function NoBeltScreen() {
   const navigate = useNavigate();
-  const [connecting, setConnecting] = useState(false);
+  const [, setConnecting] = useState(false);
   const [countdown, setCountdown] = useState(30);
   const [mode, setMode] = useState(null); // null | 'connecting' | 'charging'
 

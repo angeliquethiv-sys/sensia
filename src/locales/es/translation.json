@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "SENSIA",
+    "tagline": "Reconéctate contigo misma"
+  },
+  "nav": {
+    "home": "Inicio",
+    "program": "Programa",
+    "session": "Sesión",
+    "learn": "Aprender",
+    "profile": "Perfil"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Crear mi cuenta",
+    "logout": "Cerrar sesión",
+    "email": "Correo",
+    "password": "Contraseña",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "no_account": "¿No tienes cuenta?",
+    "already_account": "¿Ya tienes cuenta?",
+    "google": "Continuar con Google"
+  },
+  "session": {
+    "start": "Iniciar sesión",
+    "pause": "Pausa",
+    "resume": "Reanudar",
+    "stop": "Detener",
+    "inspire": "Inhala",
+    "hold": "Mantén",
+    "expire": "Exhala",
+    "rest": "Descanso",
+    "started": "Sesión iniciada. Inhala."
+  },
+  "belt": {
+    "connected": "Conectada",
+    "disconnected": "Desconectada",
+    "battery": "Batería",
+    "calibration": "Calibración"
+  },
+  "common": {
+    "back": "Volver",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando…",
+    "error": "Ha ocurrido un error",
+    "success": "Éxito"
+  }
+}

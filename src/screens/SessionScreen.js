@@ -188,14 +188,11 @@ export default function SessionScreen() {
       const p = PHASES[phaseIdxRef.current];
       const rem = phaseRemRef.current;
       if (p.id === 'inspire') {
-        const frac = (p.duration - rem) / p.duration;
         setBarWidth('100%');
         setBarTrans(`width ${rem}s linear`);
         setCircleTrans(`transform ${rem}s cubic-bezier(.4,0,.2,1)`);
         setCircleScale(p.targetScale);
       } else if (p.id === 'expire') {
-        const frac = (p.duration - rem) / p.duration;
-        const remaining = 1 - frac;
         setBarWidth('0%');
         setBarTrans(`width ${rem}s linear`);
         setCircleTrans(`transform ${rem}s cubic-bezier(.4,0,.2,1)`);

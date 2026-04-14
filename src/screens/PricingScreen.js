@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
+import { useAuth } from '../context/AuthContext';
+import { usePremium } from '../hooks/usePremium';
+import { redirectToCheckout, PLANS as STRIPE_PLANS, isStripeConfigured } from '../lib/stripe';
+import { track, Events } from '../lib/analytics';
 
 const PLANS = [
   {
@@ -89,7 +93,34 @@ const TESTIMONIALS = [
 
 export default function PricingScreen() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { isPremium, plan: activePlan, daysLeft } = usePremium();
   const [selectedPlan, setSelectedPlan] = useState('monthly');
+  const [loadingPlan, setLoadingPlan] = useState(null);
+  const [error, setError] = useState('');
+
+  const handleCta = async (planId) => {
+    if (planId === 'free') { navigate('/home'); return; }
+    if (!user) { navigate('/auth/register'); return; }
+    if (isPremium) { navigate('/home'); return; }
+    setError('');
+    setLoadingPlan(planId);
+    // Map plan id to Stripe price id
+    const priceId = planId === 'annual'
+      ? STRIPE_PLANS.yearly.priceId
+      : STRIPE_PLANS.monthly.priceId;
+    if (!isStripeConfigured) {
+      // Demo mode
+      const daysToAdd = planId === 'annual' ? 365 : 30;
+      localStorage.setItem('sensia_subscription', JSON.stringify({ isPremium: true, plan: planId, daysLeft: daysToAdd }));
+      track(Events.SUBSCRIPTION_STARTED, { plan: planId });
+      setLoadingPlan(null);
+      navigate('/home?premium=success');
+      return;
+    }
+    await redirectToCheckout(priceId);
+    setLoadingPlan(null);
+  };
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #F0EDF8 0%, #F5EFE6 50%, #EDE0D4 100%)', paddingBottom: '90px' }}>
@@ -244,7 +275,8 @@ export default function PricingScreen() {
                   </div>
 
                   <button
-                    onClick={(e) => { e.stopPropagation(); }}
+                    onClick={(e) => { e.stopPropagation(); handleCta(plan.id); }}
+                    disabled={loadingPlan === plan.id}
                     style={{
                       width: '100%', marginTop: '20px',
                       padding: '15px',
@@ -263,13 +295,33 @@ export default function PricingScreen() {
                       letterSpacing: '0.04em',
                     }}
                   >
-                    {plan.cta}
+                    {loadingPlan === plan.id
+                      ? 'Redirection…'
+                      : isPremium && plan.id === activePlan
+                      ? `${plan.name} actif ✓${daysLeft ? ` — ${daysLeft}j` : ''}`
+                      : plan.cta}
                   </button>
                 </div>
               </div>
             );
           })}
         </div>
+
+        {/* Error */}
+        {error && (
+          <div style={{ padding: '12px 16px', background: 'rgba(226,75,74,.08)', borderRadius: 14, border: '1px solid rgba(226,75,74,.25)', marginBottom: 16 }}>
+            <p style={{ fontSize: 13, color: '#E24B4A' }}>{error}</p>
+          </div>
+        )}
+
+        {/* Already premium */}
+        {isPremium && (
+          <div style={{ padding: '14px 18px', background: 'rgba(123,94,167,.1)', borderRadius: 16, border: '1.5px solid rgba(123,94,167,.25)', textAlign: 'center', marginBottom: 16 }}>
+            <p style={{ fontSize: 14, color: '#7B5EA7', fontWeight: 700 }}>
+              ✓ Tu es déjà Premium{daysLeft !== null ? ` — encore ${daysLeft} jour${daysLeft > 1 ? 's' : ''}` : ''}
+            </p>
+          </div>
+        )}
 
         {/* Garantie */}
         <div style={{

@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "SENSIA",
+    "tagline": "Reconnecte-toi à toi-même"
+  },
+  "nav": {
+    "home": "Accueil",
+    "program": "Programme",
+    "session": "Séance",
+    "learn": "Apprendre",
+    "profile": "Profil"
+  },
+  "auth": {
+    "login": "Se connecter",
+    "register": "Créer mon compte",
+    "logout": "Se déconnecter",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "no_account": "Pas encore de compte ?",
+    "already_account": "Déjà un compte ?",
+    "google": "Continuer avec Google"
+  },
+  "session": {
+    "start": "Démarrer la séance",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "stop": "Arrêter",
+    "inspire": "Inspire",
+    "hold": "Maintiens",
+    "expire": "Expire",
+    "rest": "Repos",
+    "started": "Séance démarrée. Inspire."
+  },
+  "belt": {
+    "connected": "Connectée",
+    "disconnected": "Déconnectée",
+    "battery": "Batterie",
+    "calibration": "Calibration"
+  },
+  "common": {
+    "back": "Retour",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement…",
+    "error": "Une erreur est survenue",
+    "success": "Succès"
+  }
+}

@@ -6,47 +6,6 @@ import BeltSVGV2 from '../components/BeltSVGV2';
 /* ── Couleurs LED V2 ── */
 const LED = { inspire:'#85B7EB', expire:'#EF9F27', ok:'#5DCAA5', alert:'#E24B4A', purple:'#9B8DC8', off:'#3A2D5A' };
 
-/* ── (ancienne BeltSVG conservée pour compatibilité — utiliser BeltSVGV2 à la place) ── */
-function BeltSVG({ centerLed = LED.purple, sidesLed = LED.inspire, bottomLed = LED.ok, size = 260 }) {
-  return (
-    <svg width={size} height={size * 0.38} viewBox="0 0 260 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Corps principal */}
-      <rect x="2" y="18" width="256" height="64" rx="20" fill="#2A1A44" stroke="#4A3669" strokeWidth="2"/>
-      {/* Texture tissu */}
-      {[0,1,2,3,4,5,6,7,8,9,10,11,12].map(i => (
-        <line key={i} x1={20 + i*18} y1="18" x2={20 + i*18} y2="82" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      ))}
-      {/* Zone gauche (capteur côté) */}
-      <rect x="14" y="28" width="52" height="44" rx="12" fill={sidesLed + '30'} stroke={sidesLed} strokeWidth="1.5"/>
-      <circle cx="40" cy="50" r="10" fill={sidesLed + '60'}/>
-      <circle cx="40" cy="50" r="5" fill={sidesLed}>
-        <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      {/* Zone droite (capteur côté) */}
-      <rect x="194" y="28" width="52" height="44" rx="12" fill={sidesLed + '30'} stroke={sidesLed} strokeWidth="1.5"/>
-      <circle cx="220" cy="50" r="10" fill={sidesLed + '60'}/>
-      <circle cx="220" cy="50" r="5" fill={sidesLed}>
-        <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      {/* Zone centrale (capteur gainage) */}
-      <rect x="96" y="24" width="68" height="52" rx="14" fill={centerLed + '25'} stroke={centerLed} strokeWidth="2"/>
-      <circle cx="130" cy="50" r="14" fill={centerLed + '50'}/>
-      <circle cx="130" cy="50" r="7" fill={centerLed}>
-        <animate attributeName="opacity" values="1;0.5;1" dur="1.8s" repeatCount="indefinite"/>
-      </circle>
-      <text x="130" y="78" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="7" fontFamily="sans-serif">SENSIA</text>
-      {/* Zone bas (capteur périnée) */}
-      <rect x="110" y="68" width="40" height="18" rx="8" fill={bottomLed + '40'} stroke={bottomLed} strokeWidth="1.5"/>
-      <circle cx="130" cy="77" r="5" fill={bottomLed}>
-        <animate attributeName="opacity" values="1;0.3;1" dur="2.5s" repeatCount="indefinite"/>
-      </circle>
-      {/* Boucle velcro droite */}
-      <rect x="248" y="30" width="10" height="40" rx="4" fill="#3A2D5A" stroke="#5A4A7A" strokeWidth="1.5"/>
-      {/* Boucle velcro gauche */}
-      <rect x="2" y="30" width="10" height="40" rx="4" fill="#3A2D5A" stroke="#5A4A7A" strokeWidth="1.5"/>
-    </svg>
-  );
-}
 
 /* ── Jauge capteur ── */
 function SensorGauge({ label, value, color, status }) {
@@ -95,7 +54,7 @@ const HISTORY = [
 export default function BeltScreen() {
   const navigate = useNavigate();
   const [connected, setConnected] = useState(true);
-  const [battery, setBattery] = useState(78);
+  const [battery] = useState(78);
   const [syncTime, setSyncTime] = useState('Il y a 2 minutes');
 
   /* ── Capteurs simulés ── */

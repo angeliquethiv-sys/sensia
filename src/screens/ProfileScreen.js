@@ -314,7 +314,7 @@ export default function ProfileScreen() {
   if (!profileData) return null;
 
   const { score, sessions, streak, streakMax, hours } = stats;
-  const scoreColor = score >= 80 ? '#3DD68C' : score >= 50 ? '#F0B429' : '#9B8DC8';
+
 
   const CYCLE_PHASES = [
     { days: '1-5',   label: 'Menstruelle', emoji: '🌊', color: '#8BA7FF', advice: 'Douceur · Kegel doux · Étirements' },

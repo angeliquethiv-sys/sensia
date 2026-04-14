@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "SENSIA",
+    "tagline": "Reconnect with yourself"
+  },
+  "nav": {
+    "home": "Home",
+    "program": "Program",
+    "session": "Session",
+    "learn": "Learn",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Create my account",
+    "logout": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot password?",
+    "no_account": "Don't have an account?",
+    "already_account": "Already have an account?",
+    "google": "Continue with Google"
+  },
+  "session": {
+    "start": "Start session",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "inspire": "Inhale",
+    "hold": "Hold",
+    "expire": "Exhale",
+    "rest": "Rest",
+    "started": "Session started. Inhale."
+  },
+  "belt": {
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "battery": "Battery",
+    "calibration": "Calibration"
+  },
+  "common": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading…",
+    "error": "An error occurred",
+    "success": "Success"
+  }
+}
