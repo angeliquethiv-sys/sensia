@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BeltSVGV2 from '../components/BeltSVGV2';
 
 const LED = { inspire:'#85B7EB', ok:'#5DCAA5', purple:'#9B8DC8', expire:'#EF9F27' };
 
@@ -116,10 +117,53 @@ const STEPS = [
     action: 'Position correcte ✓',
   },
   {
-    title: 'Ajuste selon ta morphologie',
-    emoji: '⚙️',
+    title: 'Vue de dos — zone dorsale',
+    emoji: '🔙',
     color: LED.expire,
     bg: '#FEF3E2',
+    content: (
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+          <BeltSVGV2
+            centerColor="#3A2D5A"
+            sidesColor={LED.inspire}
+            bottomColor="#2A2A4A"
+            backColor={LED.expire}
+            showBack={true}
+            pulseZone="back"
+            width={260}
+          />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ padding: '12px 14px', background: LED.expire + '15', borderRadius: 14, border: `1px solid ${LED.expire}30` }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#7A4010', marginBottom: 4 }}>🟠 Zone dorsale (dos)</p>
+            <p style={{ fontSize: 12, color: '#7A4010', lineHeight: 1.6 }}>
+              La ceinture SENSIA V2 intègre une zone dorsale large qui détecte les tensions lombaires et t'aide à maintenir une posture neutre pendant l'effort.
+            </p>
+          </div>
+          {[
+            { color: LED.expire, label: 'LED orange au dos', desc: 'Tension lombaire détectée — relâche le bas du dos' },
+            { color: LED.ok, label: 'LED verte au dos', desc: 'Posture dorsale correcte, poursuis l\'exercice' },
+            { color: LED.inspire, label: 'Vibration dos', desc: 'Rappel de posture — rentre légèrement le bassin' },
+          ].map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'center', padding: '10px 12px', background: item.color + '12', borderRadius: 12, border: `1px solid ${item.color}25` }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: item.color, flexShrink: 0 }}/>
+              <div>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#2C2118' }}>{item.label}</p>
+                <p style={{ fontSize: 12, color: '#6B5744' }}>{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ),
+    action: 'Zone dorsale comprise ✓',
+  },
+  {
+    title: 'Ajuste selon ta morphologie',
+    emoji: '⚙️',
+    color: LED.purple,
+    bg: '#F0EAF8',
     content: <MorphologyStep />,
     action: 'Ajustement validé ✓',
   },

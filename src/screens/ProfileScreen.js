@@ -50,6 +50,17 @@ export default function ProfileScreen() {
   // Week editing (postpartum)
   const [editingWeek, setEditingWeek] = useState(false);
 
+  // Morphology questionnaire
+  const [morpho, setMorpho] = useState(() => {
+    const saved = localStorage.getItem('sensia_morpho');
+    return saved ? JSON.parse(saved) : { waist: 72, diastasis: null, surgery: null };
+  });
+  const [showMorpho, setShowMorpho] = useState(false);
+
+  // SAV
+  const [savExpanded, setSavExpanded] = useState(null);
+  const [savReportSent, setSavReportSent] = useState(false);
+
   useEffect(() => {
     const saved = localStorage.getItem('sensia_profile');
     if (saved) {
@@ -280,6 +291,12 @@ export default function ProfileScreen() {
     const ch = { ...c, startedAt: Date.now(), progress: 0 };
     localStorage.setItem('sensia_challenge', JSON.stringify(ch));
     setActiveChallenge(ch);
+  };
+
+  const saveMorpho = (newMorpho) => {
+    const updated = { ...morpho, ...newMorpho };
+    setMorpho(updated);
+    localStorage.setItem('sensia_morpho', JSON.stringify(updated));
   };
 
   if (!profileData) return null;
@@ -753,6 +770,132 @@ export default function ProfileScreen() {
             <p style={{ fontSize: 11, color: '#9C8A78', textAlign: 'center', marginTop: 8 }}>À partager avec votre kinésithérapeute périnéale ou gynécologue</p>
           </div>
         )}
+
+        {/* ── MORPHOLOGIE ── */}
+        <div style={{ background: '#FDFBF8', borderRadius: 20, padding: '16px 18px', marginBottom: 14, boxShadow: '0 2px 10px rgba(44,33,24,.06)', border: '1.5px solid rgba(123,94,167,.15)' }}>
+          <button
+            onClick={() => setShowMorpho(v => !v)}
+            style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(123,94,167,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>📐</div>
+              <div style={{ textAlign: 'left' }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: '#2C2118' }}>Ma morphologie</p>
+                <p style={{ fontSize: 12, color: '#9C8A78' }}>Personnaliser les alertes ceinture</p>
+              </div>
+            </div>
+            <span style={{ fontSize: 18, color: '#7B5EA7', transform: showMorpho ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }}>▾</span>
+          </button>
+
+          {showMorpho && (
+            <div style={{ marginTop: 16 }}>
+              {/* Tour de taille */}
+              <div style={{ marginBottom: 18 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#2C2118' }}>📏 Tour de taille</p>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#7B5EA7' }}>{morpho.waist} cm</span>
+                </div>
+                <input
+                  type="range" min="55" max="110" step="1"
+                  value={morpho.waist}
+                  onChange={e => saveMorpho({ waist: parseInt(e.target.value) })}
+                  style={{ width: '100%', accentColor: '#7B5EA7', cursor: 'pointer' }}
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 10, color: '#9C8A78' }}>55 cm</span>
+                  <span style={{ fontSize: 10, color: '#9C8A78' }}>110 cm</span>
+                </div>
+                <p style={{ fontSize: 11, color: '#9C8A78', marginTop: 4 }}>
+                  {morpho.waist < 70 ? 'Fine — velcro position 1 recommandée' : morpho.waist < 85 ? 'Normale — velcro position 2 recommandée' : 'Ronde — velcro position 2-3 recommandée'}
+                </p>
+              </div>
+
+              {/* Diastase */}
+              <div style={{ marginBottom: 14 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#2C2118', marginBottom: 8 }}>🩺 Diastase abdominale</p>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  {[{ label: 'Non', val: false }, { label: 'Légère', val: 'light' }, { label: 'Importante', val: 'severe' }].map(opt => (
+                    <button key={String(opt.val)} onClick={() => saveMorpho({ diastasis: opt.val })}
+                      style={{ flex: 1, padding: '10px 6px', borderRadius: 14, border: `2px solid ${morpho.diastasis === opt.val ? '#7B5EA7' : 'rgba(196,152,106,.2)'}`, background: morpho.diastasis === opt.val ? 'rgba(123,94,167,.1)' : '#F8F5F0', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: morpho.diastasis === opt.val ? '#7B5EA7' : '#6B5744' }}>
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+                {morpho.diastasis && morpho.diastasis !== false && (
+                  <p style={{ fontSize: 11, color: '#E05252', marginTop: 6 }}>
+                    ⚠ La ceinture adaptera les alertes de gainage pour protéger ta sangle abdominale
+                  </p>
+                )}
+              </div>
+
+              {/* Chirurgie */}
+              <div style={{ marginBottom: 8 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#2C2118', marginBottom: 8 }}>🏥 Chirurgie abdominale ou périnéale</p>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  {[{ label: 'Aucune', val: false }, { label: 'Césarienne', val: 'cesarean' }, { label: 'Autre', val: 'other' }].map(opt => (
+                    <button key={String(opt.val)} onClick={() => saveMorpho({ surgery: opt.val })}
+                      style={{ flex: 1, padding: '10px 6px', borderRadius: 14, border: `2px solid ${morpho.surgery === opt.val ? '#C4986A' : 'rgba(196,152,106,.2)'}`, background: morpho.surgery === opt.val ? 'rgba(196,152,106,.1)' : '#F8F5F0', cursor: 'pointer', fontSize: 12, fontWeight: 700, color: morpho.surgery === opt.val ? '#C4986A' : '#6B5744' }}>
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {(morpho.diastasis || morpho.surgery) && (
+                <div style={{ padding: '10px 12px', background: 'rgba(123,94,167,.08)', borderRadius: 12, border: '1.5px solid rgba(123,94,167,.2)', marginTop: 10 }}>
+                  <p style={{ fontSize: 12, color: '#7B5EA7', lineHeight: 1.5 }}>
+                    ✓ Profil morphologique enregistré — la ceinture adaptera ses seuils d'alerte à ta situation
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ── SAV CEINTURE ── */}
+        <div style={{ background: '#FDFBF8', borderRadius: 20, padding: '16px 18px', marginBottom: 14, boxShadow: '0 2px 10px rgba(44,33,24,.06)', border: '1.5px solid rgba(196,152,106,.15)' }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: '#9C8A78', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>🔧 Support ceinture</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[
+              { id: 'nobluetooth', emoji: '📵', title: 'Ma ceinture ne se connecte pas', solution: 'Appuie 5 secondes sur le bouton central pour réinitialiser le Bluetooth. Assure-toi que le Bluetooth de ton téléphone est activé. Rapproche-toi à moins de 2 mètres. Si ça persiste : oublie l\'appareil dans les paramètres Bluetooth puis reconnecte.' },
+              { id: 'nosensor', emoji: '📡', title: 'Les capteurs affichent "--" pendant la séance', solution: 'Vérifie que la ceinture est bien positionnée — la zone centrale doit être sur ton nombril. Serre légèrement plus le velcro (passe de 2 doigts à 1.5 doigts). Les capteurs peuvent prendre 30 secondes à se stabiliser en début de séance.' },
+              { id: 'nobattery', emoji: '🔋', title: 'La batterie se décharge vite', solution: 'La durée de vie de la batterie est réduite par les LED en mode intense et les vibrations fréquentes. Charge ta ceinture avant chaque séance (câble USB-C fourni). Évite de laisser la ceinture allumée sans séance — éteins-la après usage.' },
+            ].map((item) => (
+              <div key={item.id} style={{ borderRadius: 16, overflow: 'hidden', border: `1.5px solid ${savExpanded === item.id ? 'rgba(123,94,167,.3)' : 'rgba(196,152,106,.15)'}`, transition: 'border-color .2s' }}>
+                <button
+                  onClick={() => setSavExpanded(v => v === item.id ? null : item.id)}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '13px 14px', background: savExpanded === item.id ? 'rgba(123,94,167,.06)' : '#F8F5F0', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+                >
+                  <span style={{ fontSize: 18 }}>{item.emoji}</span>
+                  <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: '#2C2118' }}>{item.title}</span>
+                  <span style={{ fontSize: 14, color: '#9C8A78', transform: savExpanded === item.id ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }}>▾</span>
+                </button>
+                {savExpanded === item.id && (
+                  <div style={{ padding: '12px 14px 14px', background: '#fff', borderTop: '1px solid rgba(196,152,106,.1)' }}>
+                    <p style={{ fontSize: 13, color: '#4A3669', lineHeight: 1.7 }}>{item.solution}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Formulaire signalement */}
+          <div style={{ marginTop: 14, padding: '14px', background: 'rgba(123,94,167,.06)', borderRadius: 16, border: '1.5px solid rgba(123,94,167,.15)' }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#4A3669', marginBottom: 8 }}>📩 Signaler un problème</p>
+            {savReportSent ? (
+              <div style={{ padding: '10px 12px', background: 'rgba(93,202,165,.15)', borderRadius: 12, border: '1.5px solid rgba(93,202,165,.3)' }}>
+                <p style={{ fontSize: 13, color: '#2C6B4A', fontWeight: 600 }}>✓ Signalement envoyé — l'équipe SENSIA reviendra vers toi sous 48h</p>
+              </div>
+            ) : (
+              <button
+                onClick={() => setSavReportSent(true)}
+                style={{ width: '100%', padding: '12px', borderRadius: 50, border: 'none', cursor: 'pointer', background: 'linear-gradient(135deg,#7B5EA7,#4A3669)', color: '#fff', fontSize: 13, fontWeight: 700, boxShadow: '0 4px 12px rgba(123,94,167,.3)' }}
+              >
+                Contacter le support →
+              </button>
+            )}
+          </div>
+        </div>
 
       {/* ── PROFILE SWITCH MODAL ── */}
       {showSwitchModal && (

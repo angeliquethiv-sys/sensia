@@ -16,6 +16,10 @@ import BeltTutorialScreen        from './screens/BeltTutorialScreen';
 import SessionAnalysisScreen     from './screens/SessionAnalysisScreen';
 import BeltProgressScreen        from './screens/BeltProgressScreen';
 import NotificationsScreen       from './screens/NotificationsScreen';
+import BeltDiscoveryScreen       from './screens/BeltDiscoveryScreen';
+import PreSessionScreen          from './screens/PreSessionScreen';
+import BeltCalibrationScreen     from './screens/BeltCalibrationScreen';
+import NoBeltScreen              from './screens/NoBeltScreen';
 
 function App() {
   const hasProfile = Boolean(localStorage.getItem('sensia_profile'));
@@ -38,6 +42,10 @@ function App() {
           <Route path="/session-analysis" element={<SessionAnalysisScreen />} />
           <Route path="/belt-progress"   element={<BeltProgressScreen />} />
           <Route path="/notifications"   element={<NotificationsScreen />} />
+          <Route path="/belt-discovery"  element={<BeltDiscoveryScreen />} />
+          <Route path="/pre-session"     element={<PreSessionScreen />} />
+          <Route path="/belt-calibration" element={<BeltCalibrationScreen />} />
+          <Route path="/no-belt"         element={<NoBeltScreen />} />
           <Route path="/"
             element={hasProfile
               ? <Navigate to="/home" replace />

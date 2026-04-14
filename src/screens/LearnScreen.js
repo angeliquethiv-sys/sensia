@@ -331,10 +331,43 @@ const MODULES = [
       keyPoints: ['La rééducation est efficace et remboursée', 'Parler à un professionnel : acte de courage, pas de faiblesse', 'Ces problèmes se traitent — tu n\'as pas à subir'],
     },
   },
+  {
+    id: 'belt_v2',
+    emoji: '⌚',
+    title: 'Comprendre ma ceinture SENSIA V2',
+    subtitle: 'Zones, LED et vibrations expliquées',
+    duration: '4 min',
+    color: '#9B8DC8',
+    bg: '#EDE6F4',
+    tag: 'Ceinture V2',
+    content: {
+      intro: "La ceinture SENSIA V2 est un compagnon intelligent qui lit ton corps en temps réel. Voici comment elle fonctionne et pourquoi chaque zone, couleur et vibration a été pensée pour toi.",
+      sections: [
+        {
+          title: "🗺️ Les 4 zones et leur rôle",
+          text: "ZONE CENTRALE (violet) : placée sur ton nombril, elle mesure l'engagement de ta sangle abdominale profonde (transverse). Elle s'allume en violet quand tu gainas bien.\n\nZONES LATÉRALES (bleu) : elles encadrent tes côtes et mesurent l'expansion thoracique. Bleues à l'inspiration — elles te guident vers une respiration diaphragmatique.\n\nZONE BASSE (vert/orange) : en V sous le nombril, elle détecte la pression périnéale. Verte = relâchement correct. Orange = attention, pression trop forte.\n\nZONE DORSALE (orange) : au dos, elle surveille les tensions lombaires. Elle t'alerte si tu te cambre ou si tu perds la posture neutre.",
+        },
+        {
+          title: "💡 La lumière diffuse — esthétique ET fonctionnelle",
+          text: "Les LED de la V2 utilisent une technologie de diffusion douce (feGaussianBlur) qui crée un halo lumineux subtil plutôt qu'une lumière crue.\n\nPourquoi ? Pour que le feedback lumineux soit perçu en vision périphérique sans te distraire de ton exercice. Tu vois la couleur sans regarder la ceinture.\n\nChaque zone est indépendante — tu peux savoir d'un coup d'œil si la respiration (côtés), le gainage (centre) ou le périnée (bas) est en phase.",
+        },
+        {
+          title: "📳 Les vibrations localisées",
+          text: "Contrairement à un téléphone qui vibre dans ta main, la V2 vibre dans la zone concernée :\n\n1 vibration courte côté = Commence à inspirer\n2 vibrations côté = Commence à expirer\n1 vibration longue centre = Bravo, bon gainage détecté\nVibration forte répétée = Erreur — corrige ta position immédiatement\n\nCes vibrations permettent un feedback sans bruit et sans regarder un écran.",
+        },
+        {
+          title: "🎓 Comment apprendre avec la ceinture",
+          text: "Semaine 1 : concentre-toi uniquement sur les LED bleues (respiration). Ignore les autres.\n\nSemaine 2 : ajoute les LED violettes (gainage). L'objectif : bleu + violet ensemble.\n\nSemaine 3 : intègre les LED vertes (périnée). Le graal : les 3 couleurs actives en même temps = synchronisation parfaite.\n\nUtilise le Mode Découverte (/belt-discovery) pour t'entraîner sans pression, avec un guidage audio.",
+        },
+      ],
+      keyPoints: ['4 zones = 4 informations simultanées', 'LED diffuse = visible en vision périphérique', 'Vibrations localisées = feedback sans distraction'],
+    },
+  },
 ];
 
 const TAG_COLORS = {
   'Fondamentaux': { bg:'#EDE6F4', color:'#7B5EA7' },
+  'Ceinture V2':  { bg:'#EDE6F4', color:'#9B8DC8' },
   'Respiration':  { bg:'#EEF2FF', color:'#8BA7FF' },
   'Gainage':      { bg:'#FFF8E1', color:'#C4986A' },
   'Musculation':  { bg:'#E0FBF8', color:'#00C4B0' },
@@ -348,10 +381,10 @@ const TAG_COLORS = {
 
 // Modules recommandés par profil
 const PROFILE_MODULES = {
-  postpartum:   ['postpartum_truth', 'perineum_basics', 'breathing_pressure'],
-  beginner:     ['muscu_basics', 'breathing_pressure', 'perineum_basics'],
-  intermediate: ['muscu_perineum', 'breathing_pressure', 'core_anatomy'],
-  injured:      ['prolapse_leaks', 'perineum_basics', 'breathing_pressure'],
+  postpartum:   ['postpartum_truth', 'perineum_basics', 'belt_v2'],
+  beginner:     ['muscu_basics', 'breathing_pressure', 'belt_v2'],
+  intermediate: ['muscu_perineum', 'breathing_pressure', 'belt_v2'],
+  injured:      ['prolapse_leaks', 'perineum_basics', 'belt_v2'],
 };
 
 const PROFILE_MODULE_LABEL = {
