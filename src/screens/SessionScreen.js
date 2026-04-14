@@ -90,6 +90,13 @@ export default function SessionScreen() {
   const [scores, setScores] = useState({ resp: 7.2, gainage: 72, perinee: 85 });
   const [scoreFlash, setScoreFlash] = useState(false);
 
+  /* ── Capteurs V2 simulés ── */
+  const [v2Center, setV2Center] = useState(58);
+  const [v2Sides,  setV2Sides]  = useState(72);
+  const [v2Bottom, setV2Bottom] = useState(38);
+  const [v2Alert,  setV2Alert]  = useState(null); // null | 'breath' | 'push' | 'core' | 'ok'
+  const v2AlertRef = useRef(null);
+
   /* ── Refs pour le timer ── */
   const phaseIdxRef       = useRef(0);
   const phaseRemRef       = useRef(PHASES[0].duration);
@@ -205,6 +212,34 @@ export default function SessionScreen() {
     }, 2500);
     return () => clearInterval(id);
   }, []);
+
+  /* ── Capteurs V2 simulés + alertes intelligentes ── */
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!isPlayingRef.current) return;
+      const newCenter = Math.min(100, Math.max(0, v2Center + ((Math.random() * 14) - 7) | 0));
+      const newSides  = Math.min(100, Math.max(0, v2Sides  + ((Math.random() * 16) - 8) | 0));
+      const newBottom = Math.min(100, Math.max(0, v2Bottom + ((Math.random() * 10) - 5) | 0));
+      setV2Center(newCenter);
+      setV2Sides(newSides);
+      setV2Bottom(newBottom);
+
+      // Alertes intelligentes
+      const phase = PHASES[phaseIdxRef.current];
+      if (v2AlertRef.current) return; // une alerte à la fois
+      let alert = null;
+      if (phase?.id === 'inspire' && newSides < 20) alert = 'breath';
+      else if (phase?.id === 'expire' && newBottom > 80) alert = 'push';
+      else if (newCenter < 30) alert = 'core';
+      else if (newCenter > 60 && newSides > 50 && newBottom < 60) alert = 'ok';
+      if (alert) {
+        v2AlertRef.current = alert;
+        setV2Alert(alert);
+        setTimeout(() => { v2AlertRef.current = null; setV2Alert(null); }, alert === 'ok' ? 2000 : 4000);
+      }
+    }, 1400);
+    return () => clearInterval(id);
+  }, [v2Center, v2Sides, v2Bottom]);
 
   const currentPhase = PHASES[phaseIdx];
   const sessionProgress = Math.min(100, (totalElapsed / 1080) * 100); // 18 min
@@ -468,6 +503,56 @@ export default function SessionScreen() {
           ))}
         </div>
 
+        {/* ── BLOC CEINTURE V2 ── */}
+        {(() => {
+          const alertConfig = {
+            breath: { border: '#E24B4A', bg: 'rgba(226,75,74,.12)', msg: '⚠️ Tu bloques ta respiration — laisse tes côtes s\'ouvrir', pulse: '#E24B4A' },
+            push:   { border: '#EF9F27', bg: 'rgba(239,159,39,.12)',  msg: '⚠️ Tu pousses vers le bas — remonte le périnée à l\'expire', pulse: '#EF9F27' },
+            core:   { border: '#F0B429', bg: 'rgba(240,180,41,.1)',   msg: '💡 Gaine légèrement — rentre le nombril vers la colonne', pulse: '#F0B429' },
+            ok:     { border: '#5DCAA5', bg: 'rgba(93,202,165,.12)',  msg: '✓ Parfait ! Continue comme ça', pulse: '#5DCAA5' },
+          };
+          const ac = v2Alert ? alertConfig[v2Alert] : null;
+          const sideLed  = currentPhase.id === 'inspire' ? '#85B7EB' : currentPhase.id === 'expire' ? '#EF9F27' : '#5DCAA5';
+          const centLed  = v2Center > 50 ? '#9B8DC8' : '#3A2D5A';
+          const botLed   = v2Bottom < 60 ? '#5DCAA5' : '#E24B4A';
+          return (
+            <div style={{ background: '#2A1A44', borderRadius: 22, padding: '16px', marginBottom: 14, border: `2px solid ${ac ? ac.border : 'rgba(155,141,200,.2)'}`, transition: 'border-color .3s ease', boxShadow: ac ? `0 0 20px ${ac.pulse}30` : 'none' }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(155,141,200,.7)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>⌚ Ceinture V2 — Temps réel</p>
+
+              {/* LED simulées */}
+              <div style={{ display: 'flex', gap: 6, marginBottom: 12, padding: '8px 10px', background: 'rgba(255,255,255,.05)', borderRadius: 10 }}>
+                <div style={{ flex: 1, height: 12, borderRadius: 6, background: sideLed, boxShadow: `0 0 8px ${sideLed}80`, transition: 'background .5s ease' }}/>
+                <div style={{ flex: 1, height: 12, borderRadius: 6, background: centLed, boxShadow: `0 0 8px ${centLed}80`, transition: 'background .5s ease' }}/>
+                <div style={{ flex: 1, height: 12, borderRadius: 6, background: botLed,  boxShadow: `0 0 8px ${botLed}80`,  transition: 'background .5s ease' }}/>
+              </div>
+
+              {/* 3 capteurs */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: ac ? 12 : 0 }}>
+                {[
+                  { label: 'CENTRE', value: v2Center, color: '#9B8DC8' },
+                  { label: 'CÔTÉS',  value: v2Sides,  color: '#85B7EB' },
+                  { label: 'BAS',    value: v2Bottom,  color: v2Bottom < 60 ? '#5DCAA5' : '#E24B4A' },
+                ].map(s => (
+                  <div key={s.label} style={{ textAlign: 'center', padding: '8px 4px', background: 'rgba(255,255,255,.05)', borderRadius: 10 }}>
+                    <div style={{ fontSize: 16, fontWeight: 700, color: s.color, transition: 'color .3s ease' }}>{s.value}</div>
+                    <div style={{ fontSize: 8, color: 'rgba(155,141,200,.6)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 2 }}>{s.label}</div>
+                    <div style={{ height: 3, background: 'rgba(255,255,255,.1)', borderRadius: 2, marginTop: 4, overflow: 'hidden' }}>
+                      <div style={{ width: `${s.value}%`, height: '100%', borderRadius: 2, background: s.color, transition: 'width .5s ease' }}/>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Alerte */}
+              {ac && (
+                <div style={{ padding: '10px 12px', background: ac.bg, borderRadius: 10, border: `1px solid ${ac.border}40`, animation: 'fadeIn .3s ease' }}>
+                  <p style={{ fontSize: 13, color: '#fff', fontWeight: 600 }}>{ac.msg}</p>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
         {/* ── ALERTE COACHING ── */}
         <div style={{
           background: 'rgba(255,248,225,.9)',
@@ -586,6 +671,16 @@ export default function SessionScreen() {
           <p style={{ textAlign: 'center', fontSize: 13, color: '#9B8DC8', fontWeight: 500 }}>
             Appuie sur ▶ pour démarrer la séance
           </p>
+        )}
+
+        {/* Bouton analyse ceinture */}
+        {totalElapsed > 30 && (
+          <button
+            onClick={() => navigate('/session-analysis')}
+            style={{ width: '100%', marginTop: 12, padding: '14px', borderRadius: 50, border: '1.5px solid rgba(123,94,167,.4)', cursor: 'pointer', background: 'rgba(123,94,167,.08)', color: '#7B5EA7', fontSize: 14, fontWeight: 700 }}
+          >
+            🔍 Voir l'analyse ceinture
+          </button>
         )}
 
       </div>

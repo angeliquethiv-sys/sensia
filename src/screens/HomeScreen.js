@@ -128,25 +128,36 @@ export default function HomeScreen() {
           </p>
         </div>
 
-        {/* Badge ceinture */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 7,
-          background: profile.beltConnected ? 'rgba(61,214,140,.12)' : 'rgba(155,141,200,.1)',
-          border: `1.5px solid ${profile.beltConnected ? 'rgba(61,214,140,.4)' : 'rgba(155,141,200,.3)'}`,
-          borderRadius: 50, padding: '7px 13px',
-        }}>
-          <div style={{
-            width: 8, height: 8, borderRadius: '50%',
-            background: profile.beltConnected ? '#3DD68C' : '#9B8DC8',
-            animation: profile.beltConnected ? 'ledGreen 1.8s ease-in-out infinite' : 'none',
-          }} />
-          <span style={{
-            fontSize: 11, fontWeight: 700,
-            color: profile.beltConnected ? '#3DD68C' : '#9B8DC8',
-            letterSpacing: '0.04em',
-          }}>
-            {profile.beltConnected ? 'Ceinture connectée' : 'Sans ceinture'}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {/* Cloche notifications */}
+          <button onClick={() => navigate('/notifications')} style={{ position: 'relative', background: 'rgba(123,94,167,.1)', border: 'none', borderRadius: '50%', width: 36, height: 36, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="#7B5EA7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <div style={{ position: 'absolute', top: 6, right: 6, width: 8, height: 8, borderRadius: '50%', background: '#E24B4A', border: '1.5px solid #F3EDE5' }}/>
+          </button>
+          {/* Badge ceinture cliquable */}
+          <div
+            onClick={() => navigate('/belt')}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7, cursor: 'pointer',
+              background: profile.beltConnected ? 'rgba(61,214,140,.12)' : 'rgba(155,141,200,.1)',
+              border: `1.5px solid ${profile.beltConnected ? 'rgba(61,214,140,.4)' : 'rgba(155,141,200,.3)'}`,
+              borderRadius: 50, padding: '7px 13px',
+            }}>
+            <div style={{
+              width: 8, height: 8, borderRadius: '50%',
+              background: profile.beltConnected ? '#3DD68C' : '#9B8DC8',
+              animation: profile.beltConnected ? 'ledGreen 1.8s ease-in-out infinite' : 'none',
+            }} />
+            <span style={{
+              fontSize: 11, fontWeight: 700,
+              color: profile.beltConnected ? '#3DD68C' : '#9B8DC8',
+              letterSpacing: '0.04em',
+            }}>
+              {profile.beltConnected ? 'Ceinture connectée' : 'Sans ceinture'}
+            </span>
+          </div>
         </div>
       </div>
 

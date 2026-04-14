@@ -42,16 +42,16 @@ const NAV = [
     ),
   },
   {
-    path: '/playlist',
-    label: 'Musique',
+    path: '/belt',
+    label: 'Ceinture',
     icon: (a) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="9"
+        <rect x="2" y="8" width="20" height="8" rx="4"
           fill={a ? 'rgba(123,94,167,.25)' : 'none'}
           stroke={a ? '#7B5EA7' : '#9C8A78'} strokeWidth={a ? '2' : '1.6'}/>
-        <circle cx="12" cy="12" r="3" fill={a ? '#7B5EA7' : '#9C8A78'}/>
-        <path d="M12 3v3M12 18v3M3 12h3M18 12h3"
-          stroke={a ? '#7B5EA7' : '#9C8A78'} strokeWidth="1.5" strokeLinecap="round"/>
+        <circle cx="8"  cy="12" r="2" fill={a ? '#7B5EA7' : '#9C8A78'}/>
+        <circle cx="12" cy="12" r="2.5" fill={a ? '#7B5EA7' : '#9C8A78'}/>
+        <circle cx="16" cy="12" r="2" fill={a ? '#7B5EA7' : '#9C8A78'}/>
       </svg>
     ),
   },

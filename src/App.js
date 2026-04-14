@@ -11,6 +11,11 @@ import LearnScreen               from './screens/LearnScreen';
 import ProfileScreen             from './screens/ProfileScreen';
 import PlaylistScreen            from './screens/PlaylistScreen';
 import BadDayScreen              from './screens/BadDayScreen';
+import BeltScreen                from './screens/BeltScreen';
+import BeltTutorialScreen        from './screens/BeltTutorialScreen';
+import SessionAnalysisScreen     from './screens/SessionAnalysisScreen';
+import BeltProgressScreen        from './screens/BeltProgressScreen';
+import NotificationsScreen       from './screens/NotificationsScreen';
 
 function App() {
   const hasProfile = Boolean(localStorage.getItem('sensia_profile'));
@@ -27,7 +32,12 @@ function App() {
           <Route path="/learn"        element={<LearnScreen />} />
           <Route path="/playlist"     element={<PlaylistScreen />} />
           <Route path="/profile"      element={<ProfileScreen />} />
-          <Route path="/bad-day"      element={<BadDayScreen />} />
+          <Route path="/bad-day"         element={<BadDayScreen />} />
+          <Route path="/belt"            element={<BeltScreen />} />
+          <Route path="/belt-tutorial"   element={<BeltTutorialScreen />} />
+          <Route path="/session-analysis" element={<SessionAnalysisScreen />} />
+          <Route path="/belt-progress"   element={<BeltProgressScreen />} />
+          <Route path="/notifications"   element={<NotificationsScreen />} />
           <Route path="/"
             element={hasProfile
               ? <Navigate to="/home" replace />
