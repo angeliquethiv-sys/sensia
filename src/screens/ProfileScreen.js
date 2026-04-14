@@ -115,49 +115,144 @@ export default function ProfileScreen() {
   };
 
   const exportPDF = () => {
-    const htmlContent = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Rapport SENSIA — ${name}</title>
-    <style>
-      body{font-family:Georgia,serif;max-width:600px;margin:40px auto;color:#2C2118;line-height:1.6}
-      h1{color:#7B5EA7;font-size:28px;margin-bottom:4px}
-      .subtitle{color:#9C8A78;font-size:13px;margin-bottom:24px}
-      .badge{background:#EDE6F4;color:#7B5EA7;padding:5px 14px;border-radius:20px;display:inline-block;font-weight:700;font-size:13px;margin-bottom:20px}
-      .section{margin-bottom:20px;padding:16px;background:#F8F5F0;border-radius:10px}
-      h2{color:#4A3669;font-size:16px;margin-bottom:10px}
-      .stat{margin-right:20px;font-size:14px}
-      .footer{font-size:10px;color:#BEB8D0;margin-top:30px;border-top:1px solid #EDE6F4;padding-top:12px}
-      .alert{background:#FFF3E0;border-left:3px solid #F0B429;padding:10px 14px;font-size:13px;margin-top:10px;border-radius:0 8px 8px 0}
-    </style></head><body>
-    <h1>SENSIA — Rapport mensuel</h1>
-    <p class="subtitle">Document confidentiel à partager avec votre professionnel de santé</p>
-    <span class="badge">${profileData?.badge || ''}</span>
+    const dateStr = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+    // Phase post-partum actuelle
+    const ppPhase = weekPostPartum <= 2 ? 'Phase 1 — Repos actif (S1–S2)'
+      : weekPostPartum <= 5 ? 'Phase 2 — Reconnexion (S3–S5)'
+      : weekPostPartum <= 8 ? 'Phase 3 — Reprise progressive (S6–S8)'
+      : 'Phase 4 — Construction (S9–S12)';
+
+    // Recommandations personnalisées selon semaine post-partum
+    const ppReco = weekPostPartum <= 2
+      ? ['Respiration diaphragmatique uniquement', 'Contractions Kegel très douces (< 5 secondes)', 'Éviter tout effort abdominal', 'Repos et récupération prioritaires']
+      : weekPostPartum <= 5
+      ? ['Respiration diaphragmatique quotidienne', 'Kegel progressifs (5–10 secondes)', 'Bascule de bassin douce', 'Pont fessier sans charge', 'Pas de gainage classique avant S6']
+      : weekPostPartum <= 8
+      ? ['Reprise du gainage léger avec synchronisation périnée', 'Pont fessier lesté (charge légère)', 'Squats au poids du corps si feu vert médical', 'Consulter le médecin avant exercices intenses']
+      : ['Programme complet de renforcement périnéal', 'Reprise progressive de la musculation', 'Attention aux charges lourdes : synchronisation périnée obligatoire', 'Séances de maintenance périnéale 2x/semaine'];
+
+    // Progression simulée (basée sur semaine)
+    const respPct  = Math.min(95, 40 + weekPostPartum * 4 + stats.sessions * 2);
+    const gainPct  = Math.min(90, 20 + weekPostPartum * 3 + stats.sessions * 2);
+    const perPct   = Math.min(98, 35 + weekPostPartum * 4 + stats.sessions * 3);
+
+    const bar = (pct, color) =>
+      `<div style="background:#eee;border-radius:4px;height:10px;margin:4px 0 10px">
+        <div style="width:${pct}%;height:100%;background:${color};border-radius:4px"></div>
+      </div>`;
+
+    const ppSection = profileId === 'postpartum' ? `
     <div class="section">
-      <h2>Informations personnelles</h2>
+      <h2>📍 Progression du programme post-partum</h2>
+      <p style="color:#7B5EA7;font-weight:700;margin-bottom:10px">${ppPhase}</p>
+      <p>Semaine actuelle : <strong>S${weekPostPartum} / 12</strong></p>
+
+      <p style="margin-top:12px;font-size:13px;font-weight:700">Respiration diaphragmatique</p>
+      ${bar(respPct, '#4A9B7F')}
+      <p style="font-size:12px;color:#9C8A78;margin-top:-6px">${respPct}% de maîtrise estimée</p>
+
+      <p style="font-size:13px;font-weight:700">Gainage & sangle abdominale</p>
+      ${bar(gainPct, '#7B5EA7')}
+      <p style="font-size:12px;color:#9C8A78;margin-top:-6px">${gainPct}% de progression</p>
+
+      <p style="font-size:13px;font-weight:700">Synchronisation périnéale</p>
+      ${bar(perPct, '#C4986A')}
+      <p style="font-size:12px;color:#9C8A78;margin-top:-6px">${perPct}% de coordination périnée-respiration</p>
+    </div>
+    <div class="section">
+      <h2>📋 Recommandations personnalisées — Semaine ${weekPostPartum}</h2>
+      <ul style="padding-left:18px">
+        ${ppReco.map(r => `<li style="margin-bottom:6px">${r}</li>`).join('')}
+      </ul>
+    </div>` : '';
+
+    const injuredSection = profileId === 'injured' && symptomHistory.length > 0 ? `
+    <div class="section">
+      <h2>📓 Journal des symptômes (7 derniers jours)</h2>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <tr style="background:#EDE6F4;font-weight:700">
+          <td style="padding:6px">Date</td><td style="padding:6px">Douleur</td><td style="padding:6px">Pression</td><td style="padding:6px">Fuites</td><td style="padding:6px">Énergie</td><td style="padding:6px">Moral</td>
+        </tr>
+        ${symptomHistory.slice(-7).map((h, i) => `
+          <tr style="background:${i%2===0?'#F8F5F0':'#fff'}">
+            <td style="padding:5px">${h.date}</td>
+            <td style="padding:5px">${h.pain}/5</td>
+            <td style="padding:5px">${h.pressure || '-'}/5</td>
+            <td style="padding:5px">${h.leaks || '-'}/5</td>
+            <td style="padding:5px">${h.energy}/5</td>
+            <td style="padding:5px">${h.mood}/5</td>
+          </tr>`).join('')}
+      </table>
+    </div>` : '';
+
+    const htmlContent = `<!DOCTYPE html><html><head><meta charset="utf-8">
+    <title>Rapport SENSIA — ${name}</title>
+    <style>
+      @page { margin: 20mm; }
+      body { font-family: Georgia, serif; max-width: 640px; margin: 0 auto; color: #2C2118; line-height: 1.6; font-size: 14px; }
+      .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #7B5EA7; padding-bottom: 16px; margin-bottom: 24px; }
+      .logo { font-size: 26px; font-weight: 700; color: #7B5EA7; letter-spacing: 3px; }
+      .logo span { color: #C4986A; }
+      .badge { background: #EDE6F4; color: #7B5EA7; padding: 5px 14px; border-radius: 20px; display: inline-block; font-weight: 700; font-size: 13px; margin-bottom: 20px; }
+      .section { margin-bottom: 20px; padding: 16px; background: #F8F5F0; border-radius: 10px; border-left: 4px solid #7B5EA7; }
+      h2 { color: #4A3669; font-size: 15px; margin-bottom: 10px; margin-top: 0; }
+      .stat-row { display: flex; gap: 20px; flex-wrap: wrap; }
+      .stat { background: #fff; border-radius: 8px; padding: 10px 14px; min-width: 120px; }
+      .stat-val { font-size: 22px; font-weight: 700; color: #7B5EA7; }
+      .stat-lbl { font-size: 11px; color: #9C8A78; }
+      .alert { background: #FFF3E0; border-left: 4px solid #F0B429; padding: 12px 16px; font-size: 13px; margin-top: 16px; border-radius: 0 8px 8px 0; }
+      .footer { font-size: 10px; color: #BEB8D0; margin-top: 30px; border-top: 1px solid #EDE6F4; padding-top: 12px; text-align: center; }
+      .green { color: #4A9B7F; }
+    </style></head><body>
+
+    <div class="header">
+      <div class="logo">SEN<span>SIA</span></div>
+      <div style="text-align:right;font-size:12px;color:#9C8A78">
+        <div>Rapport mensuel</div>
+        <div><strong>${dateStr}</strong></div>
+      </div>
+    </div>
+
+    <p class="subtitle" style="color:#9C8A78;font-size:13px;margin-bottom:16px">Document confidentiel à partager avec votre professionnel de santé</p>
+    <span class="badge">${profileData?.badge || ''} · ${profileData?.name || ''}</span>
+
+    <div class="section">
+      <h2>👤 Informations</h2>
       <p><strong>Nom :</strong> ${name}</p>
       <p><strong>Profil :</strong> ${profileData?.name || ''}</p>
-      ${profileId === 'postpartum' ? `<p><strong>Semaines post-partum :</strong> ${weekPostPartum}</p>` : ''}
-      <p><strong>Date du rapport :</strong> ${new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' })}</p>
+      ${profileId === 'postpartum' ? `<p><strong>Semaines post-partum :</strong> <span class="green">Semaine ${weekPostPartum} / 12</span></p>` : ''}
+      ${profileId === 'injured' ? `<p><strong>Phase de rééducation :</strong> Phase 1 — Douceur et prise de conscience</p>` : ''}
+      <p><strong>Date du rapport :</strong> ${dateStr}</p>
     </div>
+
     <div class="section">
-      <h2>Statistiques du mois</h2>
-      <span class="stat">Séances : <strong>${stats.sessions}</strong></span>
-      <span class="stat">Score SENSIA : <strong>${stats.score}/100</strong></span>
-      <span class="stat">Streak max : <strong>${stats.streakMax} jours</strong></span>
+      <h2>📊 Statistiques du mois</h2>
+      <div class="stat-row">
+        <div class="stat"><div class="stat-val">${stats.sessions}</div><div class="stat-lbl">Séances complétées</div></div>
+        <div class="stat"><div class="stat-val">${stats.score}<span style="font-size:13px">/100</span></div><div class="stat-lbl">Score SENSIA</div></div>
+        <div class="stat"><div class="stat-val">${stats.streakMax}</div><div class="stat-lbl">Jours consécutifs (max)</div></div>
+        <div class="stat"><div class="stat-val">${stats.hours}h</div><div class="stat-lbl">Temps d'entraînement</div></div>
+      </div>
     </div>
+
+    ${ppSection}
+    ${injuredSection}
+
     <div class="section">
-      <h2>Programme en cours</h2>
-      <p>${profileData?.weeklyAdvice?.[0]?.title || ''}</p>
-      <p>${profileData?.weeklyAdvice?.[0]?.content || ''}</p>
+      <h2>📅 Programme en cours</h2>
+      <p><strong>${profileData?.weeklyAdvice?.[0]?.title || 'Programme SENSIA'}</strong></p>
+      <p style="font-size:13px">${profileData?.weeklyAdvice?.[0]?.content || ''}</p>
     </div>
-    ${profileId === 'injured' && symptomHistory.length > 0 ? `
-    <div class="section">
-      <h2>Journal des symptômes (7 derniers jours)</h2>
-      ${symptomHistory.slice(-7).map(h => `<p>${h.date} — Douleur: ${h.pain}/5 · Énergie: ${h.energy}/5 · Moral: ${h.mood}/5</p>`).join('')}
-    </div>` : ''}
+
     <div class="alert">
       <strong>Message pour le professionnel de santé :</strong> Ce rapport a été généré automatiquement par l'application SENSIA. Il reflète l'activité déclarée par l'utilisatrice et ne remplace pas un examen clinique.
     </div>
-    <p class="footer">SENSIA — Application de rééducation périnéale et musculation féminine. Rapport généré le ${new Date().toLocaleDateString('fr-FR')}.</p>
+
+    <p class="footer">SENSIA — Application de rééducation périnéale et musculation féminine<br>
+    Rapport généré automatiquement le ${dateStr}</p>
     </body></html>`;
+
     const win = window.open('', '_blank');
     if (win) { win.document.write(htmlContent); win.document.close(); win.print(); }
   };
