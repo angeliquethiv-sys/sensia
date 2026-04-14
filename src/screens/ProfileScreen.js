@@ -336,7 +336,7 @@ export default function ProfileScreen() {
 
       {/* Header hero */}
       <div style={{
-        background: 'linear-gradient(165deg,#EDE6F4 0%,#DDD0EE 60%,#C9BAE5 100%)',
+        background: 'linear-gradient(165deg,#D8CFF0 0%,#C9BCEA 60%,#B8A8E2 100%)',
         padding: '52px 20px 28px',
       }}>
         {/* Avatar + name */}
