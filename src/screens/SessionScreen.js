@@ -517,7 +517,7 @@ export default function SessionScreen() {
           const botLed   = v2Bottom < 60 ? '#5DCAA5' : '#E24B4A';
           return (
             <div style={{ background: '#2A1A44', borderRadius: 22, padding: '16px', marginBottom: 14, border: `2px solid ${ac ? ac.border : 'rgba(155,141,200,.2)'}`, transition: 'border-color .3s ease', boxShadow: ac ? `0 0 20px ${ac.pulse}30` : 'none' }}>
-              <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(155,141,200,.7)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>⌚ Ceinture V2 — Temps réel</p>
+              <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(155,141,200,.7)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>⌚ Ceinture — Temps réel</p>
 
               {/* LED simulées */}
               <div style={{ display: 'flex', gap: 6, marginBottom: 12, padding: '8px 10px', background: 'rgba(255,255,255,.05)', borderRadius: 10 }}>

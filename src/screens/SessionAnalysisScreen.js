@@ -246,7 +246,7 @@ export default function SessionAnalysisScreen() {
         <button onClick={() => {
           const w = window.open('', '_blank');
           if (w) {
-            w.document.write(`<html><head><title>Analyse SENSIA</title><style>body{font-family:sans-serif;max-width:600px;margin:40px auto;color:#2C2118}h1{color:#7B5EA7}</style></head><body><h1>Analyse de séance SENSIA V2</h1><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><p>Score global : 82/100</p><p>Respiration : 78/100 | Gainage : 85/100 | Périnée : 88/100</p><h2>Erreurs détectées</h2><ul><li>Blocage respiratoire : 3× (↓6 avant)</li><li>Poussée vers le bas : 1× (↓4 avant)</li><li>Gainage absent : 2× (↓3 avant)</li></ul></body></html>`);
+            w.document.write(`<html><head><title>Analyse SENSIA</title><style>body{font-family:sans-serif;max-width:600px;margin:40px auto;color:#2C2118}h1{color:#7B5EA7}</style></head><body><h1>Analyse de séance SENSIA</h1><p>Date : ${new Date().toLocaleDateString('fr-FR')}</p><p>Score global : 82/100</p><p>Respiration : 78/100 | Gainage : 85/100 | Périnée : 88/100</p><h2>Erreurs détectées</h2><ul><li>Blocage respiratoire : 3× (↓6 avant)</li><li>Poussée vers le bas : 1× (↓4 avant)</li><li>Gainage absent : 2× (↓3 avant)</li></ul></body></html>`);
             w.document.close(); w.print();
           }
         }} style={{ width:'100%', padding:'16px', borderRadius:50, border:'none', cursor:'pointer', background:'linear-gradient(135deg,#7B5EA7,#4A3669)', color:'#fff', fontSize:15, fontWeight:700, marginBottom:10, boxShadow:'0 6px 20px rgba(123,94,167,.35)' }}>

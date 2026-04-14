@@ -34,7 +34,7 @@ function BeltSVG({ centerLed = LED.purple, sidesLed = LED.inspire, bottomLed = L
       <circle cx="130" cy="50" r="7" fill={centerLed}>
         <animate attributeName="opacity" values="1;0.5;1" dur="1.8s" repeatCount="indefinite"/>
       </circle>
-      <text x="130" y="78" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="7" fontFamily="sans-serif">SENSIA V2</text>
+      <text x="130" y="78" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="7" fontFamily="sans-serif">SENSIA</text>
       {/* Zone bas (capteur périnée) */}
       <rect x="110" y="68" width="40" height="18" rx="8" fill={bottomLed + '40'} stroke={bottomLed} strokeWidth="1.5"/>
       <circle cx="130" cy="77" r="5" fill={bottomLed}>
@@ -103,7 +103,6 @@ export default function BeltScreen() {
   const [sensorSides,  setSensorSides]  = useState(74);
   const [sensorBottom, setSensorBottom] = useState(45);
   const [sensorBack,   setSensorBack]   = useState(58);
-  const [showV1V2,     setShowV1V2]     = useState(false);
   const intervalRef = useRef(null);
 
   useEffect(() => {
@@ -152,7 +151,7 @@ export default function BeltScreen() {
       }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: 28, color: '#2C2118', fontWeight: 400, marginBottom: 2 }}>
-            Ma ceinture V2
+            Ma ceinture
           </h1>
           <p style={{ fontSize: 13, color: '#9C8A78' }}>SENSIA Belt · Intelligence périnéale</p>
         </div>
@@ -184,7 +183,7 @@ export default function BeltScreen() {
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div>
-              <p style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 2 }}>SENSIA Belt V2</p>
+              <p style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginBottom: 2 }}>SENSIA Belt</p>
               <p style={{ fontSize: 12, color: 'rgba(155,141,200,.8)' }}>
                 {connected ? '🔵 Connectée · Signal fort' : '⚫ Non connectée'}
               </p>
@@ -256,7 +255,7 @@ export default function BeltScreen() {
         {/* ── TYPES D'ALERTES V2 ── */}
         <div style={{ background: '#FDFBF8', borderRadius: 24, padding: '18px 16px', marginBottom: 14, border: '1.5px solid rgba(196,152,106,.15)', boxShadow: '0 2px 12px rgba(44,33,24,.06)' }}>
           <p style={{ fontSize: 11, fontWeight: 700, color: '#9C8A78', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>
-            📡 Feedback ceinture V2
+            📡 Feedback ceinture
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {[
@@ -359,46 +358,6 @@ export default function BeltScreen() {
           </div>
         </div>
 
-        {/* ── V1 vs V2 COMPARATIF (dépliable) ── */}
-        <div style={{ background: '#FDFBF8', borderRadius: 24, padding: '16px', marginBottom: 14, border: '1.5px solid rgba(123,94,167,.15)' }}>
-          <button
-            onClick={() => setShowV1V2(v => !v)}
-            style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(123,94,167,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>⚡</div>
-              <div style={{ textAlign: 'left' }}>
-                <p style={{ fontSize: 14, fontWeight: 700, color: '#2C2118' }}>SENSIA Belt V1 vs V2</p>
-                <p style={{ fontSize: 12, color: '#9C8A78' }}>Ce qui a changé avec la V2</p>
-              </div>
-            </div>
-            <span style={{ fontSize: 18, color: '#7B5EA7', transform: showV1V2 ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }}>▾</span>
-          </button>
-
-          {showV1V2 && (
-            <div style={{ marginTop: 14 }}>
-              {[
-                { feature: 'Capteurs', v1: '3 zones', v2: '4 zones (+ dos)', better: true },
-                { feature: 'LED', v1: '1 couleur', v2: 'Lumière diffuse 4 couleurs', better: true },
-                { feature: 'Vibrations', v1: 'Générale', v2: 'Localisées par zone', better: true },
-                { feature: 'Analyse', v1: 'Basique', v2: 'Post-séance détaillée', better: true },
-                { feature: 'Calibration', v1: 'Non', v2: 'Personnalisée à ton corps', better: true },
-                { feature: 'Autonomie', v1: '8h', v2: '12h+', better: true },
-              ].map((row, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 0', borderBottom: i < 5 ? '1px solid rgba(196,152,106,.1)' : 'none' }}>
-                  <span style={{ flex: 1, fontSize: 12, fontWeight: 600, color: '#2C2118' }}>{row.feature}</span>
-                  <span style={{ fontSize: 11, color: '#9C8A78', minWidth: 70, textAlign: 'center' }}>{row.v1}</span>
-                  <span style={{ fontSize: 11, color: '#7B5EA7', fontWeight: 700, minWidth: 90, textAlign: 'center', background: 'rgba(123,94,167,.1)', borderRadius: 8, padding: '3px 7px' }}>{row.v2}</span>
-                  <span style={{ fontSize: 12, color: LED.ok }}>✓</span>
-                </div>
-              ))}
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10 }}>
-                <span style={{ fontSize: 10, color: '#9C8A78', textAlign: 'center', flex: 1 }}>V1</span>
-                <span style={{ fontSize: 10, color: '#7B5EA7', fontWeight: 700, textAlign: 'center', flex: 1 }}>V2 ★</span>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
 
       <BottomNav />

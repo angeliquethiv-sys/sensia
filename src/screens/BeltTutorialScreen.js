@@ -138,7 +138,7 @@ const STEPS = [
           <div style={{ padding: '12px 14px', background: LED.expire + '15', borderRadius: 14, border: `1px solid ${LED.expire}30` }}>
             <p style={{ fontSize: 13, fontWeight: 700, color: '#7A4010', marginBottom: 4 }}>🟠 Zone dorsale (dos)</p>
             <p style={{ fontSize: 12, color: '#7A4010', lineHeight: 1.6 }}>
-              La ceinture SENSIA V2 intègre une zone dorsale large qui détecte les tensions lombaires et t'aide à maintenir une posture neutre pendant l'effort.
+              La ceinture SENSIA intègre une zone dorsale large qui détecte les tensions lombaires et t'aide à maintenir une posture neutre pendant l'effort.
             </p>
           </div>
           {[
@@ -343,7 +343,7 @@ export default function BeltTutorialScreen() {
           <div style={{ marginTop: 12, padding: '10px 14px', background: beltConnected ? LED.ok + '15' : 'rgba(139,167,255,.12)', borderRadius: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: beltConnected ? LED.ok : '#9B8DC8', animation: beltConnected ? 'none' : 'ledGreen 1.5s ease infinite' }}/>
             <span style={{ fontSize: 12, color: beltConnected ? '#2A6A4A' : '#5A4B7A', fontWeight: 600 }}>
-              {beltConnected ? 'Ceinture SENSIA V2 connectée ✓' : 'En attente de connexion...'}
+              {beltConnected ? 'Ceinture SENSIA connectée ✓' : 'En attente de connexion...'}
             </span>
           </div>
         )}

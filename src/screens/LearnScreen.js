@@ -334,14 +334,14 @@ const MODULES = [
   {
     id: 'belt_v2',
     emoji: '⌚',
-    title: 'Comprendre ma ceinture SENSIA V2',
+    title: 'Comprendre ma ceinture SENSIA',
     subtitle: 'Zones, LED et vibrations expliquées',
     duration: '4 min',
     color: '#9B8DC8',
     bg: '#EDE6F4',
-    tag: 'Ceinture V2',
+    tag: 'Ceinture',
     content: {
-      intro: "La ceinture SENSIA V2 est un compagnon intelligent qui lit ton corps en temps réel. Voici comment elle fonctionne et pourquoi chaque zone, couleur et vibration a été pensée pour toi.",
+      intro: "La ceinture SENSIA est un compagnon intelligent qui lit ton corps en temps réel. Voici comment elle fonctionne et pourquoi chaque zone, couleur et vibration a été pensée pour toi.",
       sections: [
         {
           title: "🗺️ Les 4 zones et leur rôle",
@@ -349,11 +349,11 @@ const MODULES = [
         },
         {
           title: "💡 La lumière diffuse — esthétique ET fonctionnelle",
-          text: "Les LED de la V2 utilisent une technologie de diffusion douce (feGaussianBlur) qui crée un halo lumineux subtil plutôt qu'une lumière crue.\n\nPourquoi ? Pour que le feedback lumineux soit perçu en vision périphérique sans te distraire de ton exercice. Tu vois la couleur sans regarder la ceinture.\n\nChaque zone est indépendante — tu peux savoir d'un coup d'œil si la respiration (côtés), le gainage (centre) ou le périnée (bas) est en phase.",
+          text: "Les LED de la ceinture utilisent une technologie de diffusion douce qui crée un halo lumineux subtil plutôt qu'une lumière crue.\n\nPourquoi ? Pour que le feedback lumineux soit perçu en vision périphérique sans te distraire de ton exercice. Tu vois la couleur sans regarder la ceinture.\n\nChaque zone est indépendante — tu peux savoir d'un coup d'œil si la respiration (côtés), le gainage (centre) ou le périnée (bas) est en phase.",
         },
         {
           title: "📳 Les vibrations localisées",
-          text: "Contrairement à un téléphone qui vibre dans ta main, la V2 vibre dans la zone concernée :\n\n1 vibration courte côté = Commence à inspirer\n2 vibrations côté = Commence à expirer\n1 vibration longue centre = Bravo, bon gainage détecté\nVibration forte répétée = Erreur — corrige ta position immédiatement\n\nCes vibrations permettent un feedback sans bruit et sans regarder un écran.",
+          text: "Contrairement à un téléphone qui vibre dans ta main, la ceinture vibre dans la zone concernée :\n\n1 vibration courte côté = Commence à inspirer\n2 vibrations côté = Commence à expirer\n1 vibration longue centre = Bravo, bon gainage détecté\nVibration forte répétée = Erreur — corrige ta position immédiatement\n\nCes vibrations permettent un feedback sans bruit et sans regarder un écran.",
         },
         {
           title: "🎓 Comment apprendre avec la ceinture",
@@ -367,7 +367,7 @@ const MODULES = [
 
 const TAG_COLORS = {
   'Fondamentaux': { bg:'#EDE6F4', color:'#7B5EA7' },
-  'Ceinture V2':  { bg:'#EDE6F4', color:'#9B8DC8' },
+  'Ceinture':     { bg:'#EDE6F4', color:'#9B8DC8' },
   'Respiration':  { bg:'#EEF2FF', color:'#8BA7FF' },
   'Gainage':      { bg:'#FFF8E1', color:'#C4986A' },
   'Musculation':  { bg:'#E0FBF8', color:'#00C4B0' },
