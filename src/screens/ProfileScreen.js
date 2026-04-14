@@ -490,15 +490,46 @@ export default function ProfileScreen() {
                 </div>
               )}
             </div>
-            {/* Timeline S1-S12 */}
-            <div style={{ display: 'flex', gap: 4, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
-              {Array.from({ length: 12 }, (_, i) => i + 1).map(w => (
-                <div key={w} style={{ flexShrink: 0, textAlign: 'center', width: 36 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: w < weekPostPartum ? '#4A9B7F' : w === weekPostPartum ? 'linear-gradient(135deg,#4A9B7F,#2D7A5E)' : '#E0F2EC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: w === weekPostPartum ? 14 : 11, color: w <= weekPostPartum ? '#fff' : '#9C8A78', fontWeight: 700, boxShadow: w === weekPostPartum ? '0 4px 12px rgba(74,155,127,.4)' : 'none', border: w === weekPostPartum ? '2px solid #4A9B7F' : 'none' }}>
-                    {w < weekPostPartum ? '✓' : `S${w}`}
+            {/* Timeline S1-S12 visuelle */}
+            <div style={{ marginBottom: 14 }}>
+              {/* Barre de progression */}
+              <div style={{ position: 'relative', height: 6, background: '#E0F2EC', borderRadius: 3, marginBottom: 10 }}>
+                <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', borderRadius: 3, background: 'linear-gradient(90deg,#4A9B7F,#2D7A5E)', width: `${Math.min(100, (weekPostPartum / 12) * 100)}%`, transition: 'width .5s ease' }} />
+                <div style={{ position: 'absolute', top: -5, left: `${Math.min(96, ((weekPostPartum - 1) / 11) * 100)}%`, width: 16, height: 16, borderRadius: '50%', background: '#4A9B7F', border: '3px solid #fff', boxShadow: '0 2px 8px rgba(74,155,127,.5)', transform: 'translateX(-50%)' }} />
+              </div>
+              {/* Semaines */}
+              <div style={{ display: 'flex', gap: 3, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(w => (
+                  <div key={w} style={{ flexShrink: 0, textAlign: 'center', width: 30 }}>
+                    <div style={{
+                      width: 30, height: 30, borderRadius: '50%',
+                      background: w < weekPostPartum ? '#4A9B7F' : w === weekPostPartum ? 'linear-gradient(135deg,#4A9B7F,#2D7A5E)' : '#E0F2EC',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: w === weekPostPartum ? 11 : 10, color: w <= weekPostPartum ? '#fff' : '#9C8A78',
+                      fontWeight: 700,
+                      boxShadow: w === weekPostPartum ? '0 3px 10px rgba(74,155,127,.4)' : 'none',
+                      border: w === weekPostPartum ? '2px solid #4A9B7F' : 'none',
+                    }}>
+                      {w < weekPostPartum ? '✓' : `S${w}`}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              {/* Phases labels */}
+              <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
+                {[
+                  { weeks: 'S1–S2', label: 'Repos actif', color: '#4A9B7F', done: weekPostPartum > 2 },
+                  { weeks: 'S3–S5', label: 'Reconnexion', color: '#4A9B7F', done: weekPostPartum > 5 },
+                  { weeks: 'S6–S8', label: 'Reprise', color: weekPostPartum >= 6 ? '#4A9B7F' : '#9C8A78', done: weekPostPartum > 8 },
+                  { weeks: 'S9–S12', label: 'Construction', color: weekPostPartum >= 9 ? '#4A9B7F' : '#9C8A78', done: weekPostPartum > 11 },
+                ].map((phase, i) => (
+                  <div key={i} style={{ flex: 1, background: phase.done ? '#E0F2EC' : weekPostPartum >= parseInt(phase.weeks.slice(1,2)) ? '#F0F9F5' : '#F5F5F5', borderRadius: 10, padding: '6px 8px', textAlign: 'center', border: `1px solid ${phase.color}30` }}>
+                    <p style={{ fontSize: 9, fontWeight: 700, color: phase.color, marginBottom: 2 }}>{phase.weeks}</p>
+                    <p style={{ fontSize: 10, color: '#6B5744' }}>{phase.label}</p>
+                    {phase.done && <p style={{ fontSize: 9, color: '#4A9B7F' }}>✓</p>}
+                  </div>
+                ))}
+              </div>
             </div>
             <button
               onClick={exportPDF}

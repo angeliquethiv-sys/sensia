@@ -44,6 +44,23 @@ const EXERCISE_PHOTOS = {
   stretching_lumbar:  'https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=300&h=200&fit=crop',
 };
 
+// Exercices lourds qui nécessitent analyse ceinture (intermédiaire)
+const HEAVY_LIFTS = ['squat', 'squat_barre', 'squat_goblet', 'squat_sumo_barre', 'rdl_barre', 'deadlift', 'hip_thrust', 'hip_thrust_uni', 'leg_press', 'hack_squat'];
+
+// Charges suggérées pour débutante par catégorie/exercice
+const BEGINNER_WEIGHTS = {
+  squat: '0 kg (poids du corps)', squat_goblet: '4–8 kg', squat_barre: '20 kg (barre vide)',
+  lunge: '0 kg (poids du corps)', bulgarian_split: '2–5 kg',
+  hip_thrust: '20 kg (barre vide)', glute_bridge_w: '4–8 kg', glute_bridge: '0 kg',
+  bench_press_bar: '20 kg (barre vide)', push_up_weighted: '0 kg (pompes normales)',
+  barbell_row: '20 kg (barre vide)', bicep_curl: '2–5 kg', lateral_raise: '2–4 kg',
+  rdl_barre: '20 kg (barre vide)', leg_press: '30–40 kg machine',
+  default: '2–5 kg pour commencer',
+};
+
+// Exercices modérés à précaution pour profil injured (ni contre-indiqués ni totalement sûrs)
+const INJURED_CAUTION = ['squat', 'squat_goblet', 'lunge', 'glute_bridge_w', 'glute_bridge', 'lateral_lunge', 'sumo_squat', 'kegel_standing', 'kegel_squat'];
+
 export default function MySessionScreen() {
   const navigate = useNavigate();
   const { profileId } = useProfile();
@@ -51,6 +68,7 @@ export default function MySessionScreen() {
   const [selectedEx,   setSelectedEx]  = useState(null);
   const [builderMode,  setBuilderMode] = useState(false);
   const [builderList,  setBuilderList] = useState([]);
+  const [checklist,    setChecklist]   = useState({});
 
   // Player state
   const [playerActive, setPlayerActive] = useState(false);
@@ -300,6 +318,16 @@ export default function MySessionScreen() {
                       <span style={{ fontSize: 8, fontWeight: 700, color: '#fff' }}>Idéal post-partum</span>
                     </div>
                   );
+                  if (!restricted && profileId === 'injured' && INJURED_CAUTION.includes(ex.id)) return (
+                    <div style={{ position: 'absolute', bottom: 8, left: 8, padding: '2px 7px', borderRadius: 50, background: 'rgba(230,150,50,.9)' }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, color: '#fff' }}>Avec précaution</span>
+                    </div>
+                  );
+                  if (!restricted && profileId === 'injured' && ex.diff === 'easy') return (
+                    <div style={{ position: 'absolute', bottom: 8, left: 8, padding: '2px 7px', borderRadius: 50, background: 'rgba(74,155,127,.85)' }}>
+                      <span style={{ fontSize: 8, fontWeight: 700, color: '#fff' }}>Recommandé rééducation</span>
+                    </div>
+                  );
                   if (profileId === 'beginner') return (
                     <div style={{ position: 'absolute', bottom: 8, left: 8, padding: '2px 7px', borderRadius: 50, background: 'rgba(166,137,196,.85)' }}>
                       <span style={{ fontSize: 8, fontWeight: 700, color: '#fff' }}>Technique d'abord</span>
@@ -505,6 +533,111 @@ export default function MySessionScreen() {
                 </p>
               ))}
             </div>
+
+            {/* ── SECTION PÉRINÉE ESSENTIEL (periSync === 2, tous profils) ── */}
+            {selectedEx.periSync === 2 && (
+              <div style={{ background: 'linear-gradient(135deg,#F0EAF8,#E8E0F4)', borderRadius: 16, padding: '14px 16px', marginBottom: 16, border: '1.5px solid #9B8DC850' }}>
+                <p style={{ fontSize: 11, color: '#7B5EA7', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  💜 Pourquoi le périnée est essentiel ici
+                </p>
+                <p style={{ fontSize: 13, color: '#4A3669', lineHeight: 1.6 }}>
+                  Cet exercice sollicite directement le plancher pelvien. La synchronisation périnée-respiration est <strong>indispensable</strong> : expirer à l'effort permet au périnée de remonter naturellement et de protéger les organes pelviens. Sans cette coordination, la pression vers le bas peut fragiliser le périnée sur le long terme.
+                </p>
+                <p style={{ fontSize: 12, color: '#9B8DC8', marginTop: 8, fontWeight: 600 }}>
+                  ♡♡ Ceinture SENSIA en mode actif — LED violette guide la synchronisation
+                </p>
+              </div>
+            )}
+
+            {/* ── SECTION DÉBUTANTE : Checklist + Charges ── */}
+            {profileId === 'beginner' && (
+              <>
+                <div style={{ background: '#EDE6F4', borderRadius: 16, padding: '14px 16px', marginBottom: 14, border: '1.5px solid #A689C440' }}>
+                  <p style={{ fontSize: 11, color: '#A689C4', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
+                    ✅ Checklist technique avant de commencer
+                  </p>
+                  {[
+                    'Dos droit et gainé',
+                    'Respiration prête (inspire avant, expire pendant l\'effort)',
+                    'Périnée conscient',
+                    'Genoux alignés avec les orteils',
+                    'Poids adaptés à ton niveau',
+                  ].map((item, i) => {
+                    const key = `${selectedEx.id}_${i}`;
+                    return (
+                      <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, cursor: 'pointer' }}>
+                        <div
+                          onClick={() => setChecklist(prev => ({ ...prev, [key]: !prev[key] }))}
+                          style={{
+                            width: 20, height: 20, borderRadius: 6, flexShrink: 0,
+                            border: `2px solid ${checklist[key] ? '#A689C4' : '#C4C0D0'}`,
+                            background: checklist[key] ? '#A689C4' : 'transparent',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            transition: 'all .2s',
+                          }}
+                        >
+                          {checklist[key] && <span style={{ color: '#fff', fontSize: 12 }}>✓</span>}
+                        </div>
+                        <span style={{ fontSize: 13, color: checklist[key] ? '#9B8DC8' : '#4A3669', textDecoration: checklist[key] ? 'line-through' : 'none' }}>
+                          {item}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+                <div style={{ background: '#F5F0FA', borderRadius: 16, padding: '12px 16px', marginBottom: 16, border: '1px solid #A689C420' }}>
+                  <p style={{ fontSize: 11, color: '#A689C4', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+                    🏋️ Charge suggérée pour débutante
+                  </p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: '#4A3669' }}>
+                    {BEGINNER_WEIGHTS[selectedEx.id] || BEGINNER_WEIGHTS.default}
+                  </p>
+                  <p style={{ fontSize: 12, color: '#9B8DC8', marginTop: 4 }}>Maîtrise la technique avant d'augmenter la charge.</p>
+                </div>
+              </>
+            )}
+
+            {/* ── SECTION INTERMÉDIAIRE : Analyse ceinture pour charges lourdes ── */}
+            {profileId === 'intermediate' && HEAVY_LIFTS.includes(selectedEx.id) && (
+              <div style={{ background: '#FDF4E8', borderRadius: 16, padding: '14px 16px', marginBottom: 16, border: '1.5px solid #C4986A40' }}>
+                <p style={{ fontSize: 11, color: '#C4986A', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  ⌚ Analyse ceinture SENSIA
+                </p>
+                <p style={{ fontSize: 13, color: '#4A3020', lineHeight: 1.6, marginBottom: 10 }}>
+                  La ceinture détecte si tu pousses vers le bas pendant cet exercice. Un blocage respiratoire (Valsalva) sous charge lourde augmente brutalement la pression sur le plancher pelvien.
+                </p>
+                <div style={{ background: 'rgba(230,150,50,.15)', borderRadius: 10, padding: '10px 12px', border: '1px solid rgba(230,150,50,.4)' }}>
+                  <p style={{ fontSize: 12, color: '#C4986A', fontWeight: 700, margin: 0 }}>
+                    ⚠️ Alerte simulée : blocage respiratoire possible
+                  </p>
+                  <p style={{ fontSize: 12, color: '#7A5020', marginTop: 4, lineHeight: 1.5 }}>
+                    Vérifie ta respiration : expire en montant la charge, ne bloque jamais en poussant. La ceinture vibre si elle détecte un blocage.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* ── SECTION INJURED : Conseil médical pour exercices à risque ── */}
+            {profileId === 'injured' && isExerciseRestricted(selectedEx.id, 'injured') && (
+              <div style={{ background: 'rgba(244,192,209,.2)', borderRadius: 16, padding: '14px 16px', marginBottom: 16, border: '1.5px solid #F4C0D1' }}>
+                <p style={{ fontSize: 11, color: '#C0607A', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  ⚠️ Conseil médical
+                </p>
+                <p style={{ fontSize: 13, color: '#8A2040', lineHeight: 1.6 }}>
+                  Cet exercice est contre-indiqué en phase de rééducation. Si tu ressens une pression vers le bas, des douleurs ou des fuites pendant l'exercice, <strong>arrête immédiatement</strong> et consulte une kinésithérapeute périnéale.
+                </p>
+              </div>
+            )}
+            {profileId === 'injured' && !isExerciseRestricted(selectedEx.id, 'injured') && INJURED_CAUTION.includes(selectedEx.id) && (
+              <div style={{ background: 'rgba(230,150,50,.12)', borderRadius: 16, padding: '12px 16px', marginBottom: 16, border: '1px solid rgba(230,150,50,.35)' }}>
+                <p style={{ fontSize: 11, color: '#C4986A', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+                  ⚠️ À pratiquer avec précaution
+                </p>
+                <p style={{ fontSize: 13, color: '#6A4020', lineHeight: 1.6 }}>
+                  Si tu ressens une pression vers le bas pendant cet exercice, consulte une kinésithérapeute périnéale avant de continuer.
+                </p>
+              </div>
+            )}
 
             {/* CTAs */}
             <div style={{ display: 'flex', gap: 10 }}>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import BottomNav from '../components/BottomNav';
+import { useProfile } from '../context/ProfileContext';
 
 const MODULES = [
   {
@@ -345,8 +346,28 @@ const TAG_COLORS = {
   'Rééducation':  { bg:'#FBEAF0', color:'#E8A0B8' },
 };
 
+// Modules recommandés par profil
+const PROFILE_MODULES = {
+  postpartum:   ['postpartum_truth', 'perineum_basics', 'breathing_pressure'],
+  beginner:     ['muscu_basics', 'breathing_pressure', 'perineum_basics'],
+  intermediate: ['muscu_perineum', 'breathing_pressure', 'core_anatomy'],
+  injured:      ['prolapse_leaks', 'perineum_basics', 'breathing_pressure'],
+};
+
+const PROFILE_MODULE_LABEL = {
+  postpartum:   { label: 'Post-partum', color: '#4A9B7F', bg: '#E0F2EC', emoji: '👶' },
+  beginner:     { label: 'Débutante',   color: '#A689C4', bg: '#EDE6F4', emoji: '🌱' },
+  intermediate: { label: 'Intermédiaire', color: '#C4986A', bg: '#F5EDE2', emoji: '🔥' },
+  injured:      { label: 'Rééducation', color: '#E8A0B8', bg: '#FBEAF0', emoji: '💙' },
+};
+
 export default function LearnScreen() {
   const [selectedModule, setSelectedModule] = useState(null);
+  const { profileId } = useProfile();
+
+  const recommendedIds = PROFILE_MODULES[profileId] || PROFILE_MODULES.postpartum;
+  const recommendedModules = recommendedIds.map(id => MODULES.find(m => m.id === id)).filter(Boolean);
+  const profileMeta = PROFILE_MODULE_LABEL[profileId] || PROFILE_MODULE_LABEL.postpartum;
 
   if (selectedModule) {
     return <ModuleDetail module={selectedModule} onBack={() => setSelectedModule(null)} />;
@@ -368,8 +389,43 @@ export default function LearnScreen() {
         <p style={{ fontSize: 14, color: '#9C8A78' }}>{MODULES.length} modules · ~35 min au total</p>
       </div>
 
-      {/* Featured module */}
+      {/* ── Pour toi : modules recommandés par profil ── */}
       <div style={{ padding: '16px 16px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <span style={{ fontSize: 16 }}>{profileMeta.emoji}</span>
+          <p style={{ fontSize: 11, fontWeight: 700, color: profileMeta.color, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            Pour toi — {profileMeta.label}
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 8, marginBottom: 16, scrollbarWidth: 'none' }}>
+          {recommendedModules.map(mod => {
+            const tagStyle = TAG_COLORS[mod.tag] || { bg:'#EDE6F4', color:'#7B5EA7' };
+            return (
+              <div
+                key={mod.id}
+                onClick={() => setSelectedModule(mod)}
+                style={{
+                  flexShrink: 0, width: 160,
+                  background: '#FDFBF8', borderRadius: 18, cursor: 'pointer',
+                  border: `2px solid ${profileMeta.color}40`,
+                  boxShadow: `0 4px 16px ${profileMeta.color}20`,
+                  padding: '14px 14px 12px',
+                }}
+              >
+                <div style={{ fontSize: 28, marginBottom: 8 }}>{mod.emoji}</div>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#2C2118', lineHeight: 1.3, marginBottom: 6 }}>{mod.title}</p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 10, color: tagStyle.color, background: tagStyle.bg, borderRadius: 50, padding: '2px 8px', fontWeight: 700 }}>{mod.tag}</span>
+                  <span style={{ fontSize: 10, color: '#9C8A78' }}>{mod.duration}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Featured module */}
+      <div style={{ padding: '0 16px 0' }}>
         <div
           onClick={() => setSelectedModule(MODULES[0])}
           style={{
