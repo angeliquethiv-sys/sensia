@@ -336,17 +336,18 @@ export default function ProfileScreen() {
 
       {/* Header hero */}
       <div style={{
-        background: profileData.heroColor || 'linear-gradient(165deg,#4A3669,#2D1F4A)',
+        background: 'linear-gradient(165deg,#EDE6F4 0%,#DDD0EE 60%,#C9BAE5 100%)',
         padding: '52px 20px 28px',
       }}>
         {/* Avatar + name */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
           <div style={{
             width: 64, height: 64, borderRadius: '50%',
-            background: `${profileData.color}40`,
-            border: `2px solid ${profileData.color}80`,
+            background: 'rgba(123,94,167,.18)',
+            border: '2px solid rgba(123,94,167,.35)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 28,
+            boxShadow: '0 4px 16px rgba(123,94,167,.15)',
           }}>
             {profileData.emoji}
           </div>
@@ -359,52 +360,53 @@ export default function ProfileScreen() {
                   onBlur={saveName}
                   autoFocus
                   style={{
-                    background: 'rgba(255,255,255,.15)', border: '1px solid rgba(255,255,255,.3)',
-                    borderRadius: 10, padding: '6px 12px', color: '#fff', fontSize: 18,
+                    background: 'rgba(255,255,255,.6)', border: '1.5px solid rgba(123,94,167,.4)',
+                    borderRadius: 10, padding: '6px 12px', color: '#2C2118', fontSize: 18,
                     fontFamily: "'DM Sans', sans-serif", outline: 'none', width: '100%',
                   }}
                 />
-                <button onClick={saveName} style={{ background: profileData.color, border: 'none', borderRadius: 8, padding: '6px 12px', color: '#fff', cursor: 'pointer' }}>✓</button>
+                <button onClick={saveName} style={{ background: '#7B5EA7', border: 'none', borderRadius: 8, padding: '6px 12px', color: '#fff', cursor: 'pointer' }}>✓</button>
               </div>
             ) : (
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, color: '#fff', fontWeight: 400 }}>{name}</h2>
-                <button onClick={() => setEditingName(true)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,.5)', cursor: 'pointer', fontSize: 14 }}>✏️</button>
+                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 24, color: '#2C2118', fontWeight: 400 }}>{name}</h2>
+                <button onClick={() => setEditingName(true)} style={{ background: 'none', border: 'none', color: 'rgba(74,54,105,.5)', cursor: 'pointer', fontSize: 14 }}>✏️</button>
               </div>
             )}
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 4,
               padding: '4px 12px', borderRadius: 50,
-              background: `${profileData.color}30`, border: `1px solid ${profileData.color}60`,
+              background: 'rgba(123,94,167,.15)', border: '1px solid rgba(123,94,167,.3)',
             }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: profileData.color }}>{profileData.badge}</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#4A3669' }}>{profileData.badge}</span>
             </div>
           </div>
         </div>
 
         {/* SENSIA Score */}
         <div style={{
-          background: 'rgba(255,255,255,.1)', borderRadius: 20, padding: '16px 18px',
-          border: '1px solid rgba(255,255,255,.15)',
+          background: 'rgba(255,255,255,.5)', borderRadius: 20, padding: '16px 18px',
+          border: '1px solid rgba(123,94,167,.2)',
+          backdropFilter: 'blur(8px)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
             <div>
-              <p style={{ fontSize: 10, color: 'rgba(255,255,255,.6)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2 }}>Score SENSIA</p>
+              <p style={{ fontSize: 10, color: '#7B5EA7', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 2, fontWeight: 700 }}>Score SENSIA</p>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                <span style={{ fontFamily: 'var(--font-heading)', fontSize: 42, color: scoreColor, lineHeight: 1 }}>{score}</span>
-                <span style={{ fontSize: 14, color: 'rgba(255,255,255,.5)' }}>/100</span>
+                <span style={{ fontFamily: 'var(--font-heading)', fontSize: 42, color: '#4A3669', lineHeight: 1 }}>{score}</span>
+                <span style={{ fontSize: 14, color: '#9B8DC8' }}>/100</span>
               </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: 12, color: 'rgba(255,255,255,.7)', marginBottom: 2 }}>🔥 {streak} jours</p>
-              <p style={{ fontSize: 11, color: 'rgba(255,255,255,.5)' }}>Record : {streakMax}j</p>
+              <p style={{ fontSize: 12, color: '#4A3669', fontWeight: 600, marginBottom: 2 }}>🔥 {streak} jours</p>
+              <p style={{ fontSize: 11, color: '#9B8DC8' }}>Record : {streakMax}j</p>
             </div>
           </div>
           {/* Score bar */}
-          <div style={{ height: 6, background: 'rgba(255,255,255,.15)', borderRadius: 3, overflow: 'hidden' }}>
-            <div style={{ width: `${score}%`, height: '100%', background: `linear-gradient(90deg,${scoreColor},${scoreColor}AA)`, borderRadius: 3, transition: 'width 1s ease' }} />
+          <div style={{ height: 6, background: 'rgba(123,94,167,.15)', borderRadius: 3, overflow: 'hidden' }}>
+            <div style={{ width: `${score}%`, height: '100%', background: 'linear-gradient(90deg,#9B8DC8,#7B5EA7)', borderRadius: 3, transition: 'width 1s ease', boxShadow: '0 0 8px rgba(123,94,167,.4)' }} />
           </div>
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,.5)', marginTop: 6 }}>
+          <p style={{ fontSize: 11, color: '#9B8DC8', marginTop: 6 }}>
             {score < 30 ? 'Juste démarrée — continue !' : score < 60 ? 'Bonne progression 👏' : score < 80 ? 'Excellente régularité ⭐' : 'Niveau expert 🏆'}
           </p>
         </div>
