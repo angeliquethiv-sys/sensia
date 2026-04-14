@@ -97,11 +97,34 @@ export default function SessionScreen() {
   const [v2Alert,  setV2Alert]  = useState(null); // null | 'breath' | 'push' | 'core' | 'ok'
   const v2AlertRef = useRef(null);
 
+  /* ── Guidage vocal ── */
+  const [voiceOn, setVoiceOn] = useState(localStorage.getItem('sensia_voice') !== 'false');
+  const voiceEnabledRef = useRef(localStorage.getItem('sensia_voice') !== 'false');
+  const speak = useCallback((text) => {
+    if (!voiceEnabledRef.current) return;
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-FR';
+    u.rate = 0.92;
+    u.pitch = 1.05;
+    u.volume = 1;
+    window.speechSynthesis.speak(u);
+  }, []);
+
   /* ── Refs pour le timer ── */
   const phaseIdxRef       = useRef(0);
   const phaseRemRef       = useRef(PHASES[0].duration);
   const isPlayingRef      = useRef(false);
   const totalElapsedRef   = useRef(0);
+
+  /* ── Textes vocaux par phase ── */
+  const VOICE_TEXTS = {
+    inspire: 'Inspire',
+    hold: 'Maintiens',
+    expire: 'Expire',
+    rest: 'Repos',
+  };
 
   /* ── Appliquer une phase ── */
   const applyPhase = useCallback((idx) => {
@@ -114,6 +137,7 @@ export default function SessionScreen() {
     setCircleColor(p.circleColor);
     setCircleBorder(p.borderColor);
     setCircleGlow(p.glow);
+    speak(VOICE_TEXTS[p.id] || p.label);
 
     if (p.id === 'inspire') {
       setCircleScale(p.targetScale);
@@ -136,10 +160,11 @@ export default function SessionScreen() {
       setBarWidth('0%');
       setBarTrans('width .3s ease');
     }
-  }, []);
+  }, [speak]);
 
   /* ── Démarrer ── */
   const handleStart = () => {
+    speak('Séance démarrée. Inspire.');
     applyPhase(0);
     isPlayingRef.current = true;
     setIsPlaying(true);
@@ -154,7 +179,8 @@ export default function SessionScreen() {
     isPlayingRef.current = !isPlayingRef.current;
     setIsPlaying(v => !v);
     if (!isPlayingRef.current) {
-      // Pause : geler l'animation CSS
+      // Pause : geler l'animation CSS + couper la voix
+      window.speechSynthesis && window.speechSynthesis.cancel();
       setCircleTrans('transform .3s ease');
       setBarTrans('width .3s ease');
     } else {
@@ -195,7 +221,7 @@ export default function SessionScreen() {
         applyPhase(next);
       }
     }, 1000);
-    return () => clearInterval(id);
+    return () => { clearInterval(id); window.speechSynthesis && window.speechSynthesis.cancel(); };
   }, [applyPhase]);
 
   /* ── Scores simulés (fluctuation toutes les 2.5 s) ── */
@@ -640,6 +666,31 @@ export default function SessionScreen() {
             onTouchEnd={e => e.currentTarget.style.transform = 'scale(1)'}
           >
             {isPlaying ? '⏸' : '▶'}
+          </button>
+
+          {/* Micro toggle */}
+          <button
+            onClick={() => {
+              const next = !voiceOn;
+              setVoiceOn(next);
+              voiceEnabledRef.current = next;
+              localStorage.setItem('sensia_voice', String(next));
+              if (!next) window.speechSynthesis && window.speechSynthesis.cancel();
+              else speak('Guidage vocal activé');
+            }}
+            style={{
+              width: 54, height: 54, borderRadius: '50%',
+              background: voiceOn ? 'rgba(123,94,167,.18)' : 'rgba(255,255,255,.85)',
+              border: voiceOn ? '1.5px solid rgba(123,94,167,.4)' : '1.5px solid rgba(155,141,200,.3)',
+              boxShadow: '0 4px 14px rgba(74,54,105,.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 20, cursor: 'pointer', position: 'relative',
+            }}
+          >
+            <span style={{ opacity: voiceOn ? 1 : 0.35 }}>🎙️</span>
+            {!voiceOn && (
+              <div style={{ position: 'absolute', top: '50%', left: '50%', width: 30, height: 2, background: '#E24B4A', borderRadius: 2, transform: 'translate(-50%, -50%) rotate(-45deg)' }} />
+            )}
           </button>
 
           {/* Suivant */}

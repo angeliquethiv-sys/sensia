@@ -37,6 +37,18 @@ export default function ProfileScreen() {
   const [showSwitchModal, setShowSwitchModal] = useState(false);
   const [pendingProfileId, setPendingProfileId] = useState(null);
 
+  // Guidage vocal
+  const [voiceEnabled, setVoiceEnabled] = useState(() => {
+    const v = localStorage.getItem('sensia_voice');
+    return v === null ? true : v === 'true'; // activé par défaut
+  });
+
+  const toggleVoice = () => {
+    const next = !voiceEnabled;
+    setVoiceEnabled(next);
+    localStorage.setItem('sensia_voice', String(next));
+  };
+
   // Symptom journal (injured)
   const [todaySymptoms, setTodaySymptoms] = useState({ pain: 2, pressure: 1, leaks: 1, energy: 3, mood: 3 });
   const [symptomNote, setSymptomNote] = useState('');
@@ -535,9 +547,35 @@ export default function ProfileScreen() {
 
         {/* Settings */}
         <div style={{ background: '#FDFBF8', borderRadius: 20, overflow: 'hidden', marginBottom: 14, boxShadow: '0 2px 10px rgba(44,33,24,.06)', border: '1.5px solid rgba(196,152,106,.1)' }}>
+
+          {/* Guidage vocal — toggle dédié */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', borderBottom: '1px solid rgba(196,152,106,.1)' }}>
+            <span style={{ fontSize: 20 }}>🎙️</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#2C2118' }}>Guidage vocal</p>
+              <p style={{ fontSize: 12, color: '#9C8A78' }}>{voiceEnabled ? 'Activé — annonce chaque phase' : 'Désactivé — séance en silence'}</p>
+            </div>
+            <button
+              onClick={toggleVoice}
+              style={{
+                width: 48, height: 26, borderRadius: 13, flexShrink: 0,
+                background: voiceEnabled ? '#7B5EA7' : '#E2D9F0',
+                border: 'none', cursor: 'pointer', position: 'relative',
+                transition: 'background .2s',
+              }}
+            >
+              <div style={{
+                width: 20, height: 20, borderRadius: '50%', background: '#fff',
+                position: 'absolute', top: 3,
+                left: voiceEnabled ? 24 : 4,
+                transition: 'left .2s',
+                boxShadow: '0 1px 4px rgba(0,0,0,.2)',
+              }} />
+            </button>
+          </div>
+
           {[
             { icon: '🔔', label: 'Notifications', sub: 'Rappels quotidiens' },
-            { icon: '🎙️', label: 'Guidage vocal', sub: 'Actif pendant les séances' },
             { icon: '💜', label: 'Mon programme', sub: 'Voir le programme complet', action: () => navigate('/program') },
             { icon: '🔄', label: 'Changer de profil', sub: 'Adapter tout mon programme', action: () => setShowSwitchModal(true) },
           ].map((item, i, arr) => (
