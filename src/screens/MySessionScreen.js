@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import { CATEGORIES, EXERCISES, DIFF_META, getCategoryMeta } from '../data/exercises';
-import { getExerciseImage } from '../data/exerciseImages';
+import ExerciseIllustration from '../components/ExerciseIllustration';
 import { useProfile } from '../context/ProfileContext';
 import { isExerciseRestricted } from '../data/profiles';
 
@@ -238,13 +238,15 @@ export default function MySessionScreen() {
                 position: 'relative',
               }}
             >
-              {/* Exercise image */}
+              {/* Exercise illustration */}
               <div style={{ width: '100%', height: 110, overflow: 'hidden', position: 'relative' }}>
-                <img
-                  src={getExerciseImage(ex.id)}
-                  alt={ex.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={e => { e.target.style.display = 'none'; }}
+                <ExerciseIllustration
+                  exerciseId={ex.id}
+                  category={ex.category}
+                  width="100%"
+                  height={110}
+                  borderRadius={0}
+                  style={{ width: '100%' }}
                 />
                 {/* Gradient overlay */}
                 <div style={{
@@ -399,11 +401,13 @@ export default function MySessionScreen() {
 
             {/* Exercise header with image */}
             <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', height: 160 }}>
-              <img
-                src={getExerciseImage(selectedEx.id)}
-                alt={selectedEx.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                onError={e => { e.target.style.background = catMeta?.bg; e.target.style.display = 'none'; }}
+              <ExerciseIllustration
+                exerciseId={selectedEx.id}
+                category={selectedEx.category}
+                width="100%"
+                height={160}
+                borderRadius={0}
+                style={{ width: '100%' }}
               />
               <div style={{
                 position: 'absolute', inset: 0,

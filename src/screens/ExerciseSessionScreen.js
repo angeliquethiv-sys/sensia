@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import { getExerciseById, DIFF_META, getCategoryMeta } from '../data/exercises';
-import { getExerciseImage } from '../data/exerciseImages';
+import ExerciseIllustration from '../components/ExerciseIllustration';
 
 export default function ExerciseSessionScreen() {
   const { id } = useParams();
@@ -259,15 +259,18 @@ export default function ExerciseSessionScreen() {
         </div>
       </div>
 
-      {/* ── Photo exercice (masquée quand la séance est active) ── */}
+      {/* ── Illustration exercice (masquée quand la séance est active) ── */}
       {!isStarted && (
         <div style={{ position: 'relative', width: '100%', height: 200, overflow: 'hidden' }}>
-          <img
-            src={getExerciseImage(ex.id)}
-            alt={ex.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }}
+          <ExerciseIllustration
+            exerciseId={ex.id}
+            category={ex.category}
+            width="100%"
+            height={200}
+            borderRadius={0}
+            style={{ width: '100%' }}
           />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 40%, #F5EFE6 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, #F5EFE6 100%)' }} />
           <div style={{ position: 'absolute', bottom: 12, left: 16, display: 'flex', gap: 6, alignItems: 'center' }}>
             <span style={{ fontSize: 16 }}>{ex.emoji}</span>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#7B5EA7', background: 'rgba(255,255,255,.85)', padding: '3px 10px', borderRadius: 50 }}>{catMeta?.label}</span>
