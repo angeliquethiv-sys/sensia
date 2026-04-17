@@ -1,5 +1,112 @@
 import React from 'react';
 
+// ── Real exercise photos ─────────────────────────────────────────────
+// Bas du corps
+import imgSquatBarre from '../images/exercises/bas-du-corps/squat-barre.png';
+import imgSquatGobelet from '../images/exercises/bas-du-corps/squat-gobelet.png';
+import imgSquatSumoBarre from '../images/exercises/bas-du-corps/squat-sumo-barre.png';
+import imgLegPress from '../images/exercises/bas-du-corps/leg-press.png';
+import imgFenteAvant from '../images/exercises/bas-du-corps/fente-avant-halteres.png';
+import imgFenteInversee from '../images/exercises/bas-du-corps/fente-inversee-halteres.png';
+import imgFenteLaterale from '../images/exercises/bas-du-corps/fente-laterale.png';
+import imgRdlDb from '../images/exercises/bas-du-corps/romanian-deadlift-halteres.png';
+import imgRdlBarre from '../images/exercises/bas-du-corps/souleve-terre-roumain-barre.png';
+import imgLegCurl from '../images/exercises/bas-du-corps/leg-curl-couche.png';
+import imgLegExtension from '../images/exercises/bas-du-corps/leg-extension.png';
+import imgStepUp from '../images/exercises/bas-du-corps/step-up-halteres.png';
+import imgGoodMorning from '../images/exercises/bas-du-corps/good-morning.png';
+// Haut du corps
+import imgBenchDb from '../images/exercises/haut-du-corps/developpe-couche-halteres.png';
+import imgBenchBar from '../images/exercises/haut-du-corps/developpe-couche-barre.png';
+import imgInclinePress from '../images/exercises/haut-du-corps/developpe-incline-halteres.png';
+import imgChestFly from '../images/exercises/haut-du-corps/ecarte-couche-halteres.png';
+import imgPushUp from '../images/exercises/haut-du-corps/pompes-lestees.png';
+import imgDbRow from '../images/exercises/haut-du-corps/rowing-haltere-unilateral.png';
+import imgBarbellRow from '../images/exercises/haut-du-corps/rowing-barre.png';
+import imgLatPulldown from '../images/exercises/haut-du-corps/tirage-vertical-machine.png';
+import imgSeatedRow from '../images/exercises/haut-du-corps/tirage-horizontal-cable.png';
+import imgPullover from '../images/exercises/haut-du-corps/pull-over-haltere.png';
+import imgBicepCurl from '../images/exercises/haut-du-corps/curl-biceps-halteres.png';
+import imgHammerCurl from '../images/exercises/haut-du-corps/curl-marteau.png';
+import imgBarbellCurl from '../images/exercises/haut-du-corps/curl-barre.png';
+import imgTricepPushdown from '../images/exercises/haut-du-corps/extension-triceps-poulie.png';
+import imgDips from '../images/exercises/haut-du-corps/dips-assistes.png';
+import imgShoulderPress from '../images/exercises/haut-du-corps/developpe-militaire-halteres.png';
+import imgLateralRaise from '../images/exercises/haut-du-corps/elevations-laterales.png';
+import imgFrontRaise from '../images/exercises/haut-du-corps/elevations-frontales.png';
+import imgReverseFly from '../images/exercises/haut-du-corps/oiseau-halteres.png';
+import imgShrugs from '../images/exercises/haut-du-corps/shrugs-halteres.png';
+// Gainage
+import imgPlancheAvantMains from '../images/exercises/gainage/planche-avant-mains.png';
+import imgPlancheLaterale from '../images/exercises/gainage/planche-laterale.png';
+import imgPlancheLateraleEtoile from '../images/exercises/gainage/planche-laterale-etoile.png';
+import imgGaitagePont from '../images/exercises/gainage/gainage-pont.png';
+import imgMountainClimber from '../images/exercises/gainage/mountain-climber-lent.png';
+import imgPlancheRotation from '../images/exercises/gainage/planche-avec-rotation.png';
+import imgGluteBridgeLeste from '../images/exercises/gainage/glute-bridge-leste.png';
+// Étirements
+import imgButterflyStretch from '../images/exercises/etirements/etirement-adducteurs-papillon.png';
+import imgBackBall from '../images/exercises/etirements/etirement-lombaires-boule.png';
+import imgShoulderCross from '../images/exercises/etirements/etirement-epaules-croisees.png';
+import imgPecDoorway from '../images/exercises/etirements/etirement-pectoraux-porte.png';
+import imgChildPose from '../images/exercises/etirements/posture-enfant.png';
+import imgLateralStretch from '../images/exercises/etirements/etirement-lateral-debout.png';
+
+// ── Mapping: exercice ID → photo ────────────────────────────────────
+const EXERCISE_PHOTOS = {
+  // Bas du corps
+  squat_barre:        imgSquatBarre,
+  squat_gobelet:      imgSquatGobelet,
+  hack_squat:         imgSquatBarre,
+  squat_sumo_barre:   imgSquatSumoBarre,
+  leg_press:          imgLegPress,
+  lunge_db:           imgFenteAvant,
+  lunge_reverse:      imgFenteInversee,
+  lunge_lateral:      imgFenteLaterale,
+  rdl_db:             imgRdlDb,
+  rdl_barre:          imgRdlBarre,
+  leg_curl:           imgLegCurl,
+  leg_extension:      imgLegExtension,
+  step_up:            imgStepUp,
+  good_morning:       imgGoodMorning,
+  glute_bridge_w:     imgGluteBridgeLeste,
+  // Haut du corps
+  bench_press_db:     imgBenchDb,
+  bench_press_bar:    imgBenchBar,
+  incline_press:      imgInclinePress,
+  chest_fly:          imgChestFly,
+  push_up_weighted:   imgPushUp,
+  db_row:             imgDbRow,
+  barbell_row:        imgBarbellRow,
+  lat_pulldown:       imgLatPulldown,
+  seated_row:         imgSeatedRow,
+  pullover:           imgPullover,
+  bicep_curl:         imgBicepCurl,
+  hammer_curl:        imgHammerCurl,
+  barbell_curl:       imgBarbellCurl,
+  tricep_pushdown:    imgTricepPushdown,
+  assisted_dips:      imgDips,
+  shoulder_press:     imgShoulderPress,
+  lateral_raise:      imgLateralRaise,
+  front_raise:        imgFrontRaise,
+  reverse_fly:        imgReverseFly,
+  shrugs:             imgShrugs,
+  // Gainage
+  plank_hands:            imgPlancheAvantMains,
+  side_plank:             imgPlancheLaterale,
+  side_plank_star:        imgPlancheLateraleEtoile,
+  bridge_plank:           imgGaitagePont,
+  mountain_climber_slow:  imgMountainClimber,
+  plank_rotation:         imgPlancheRotation,
+  // Étirements
+  butterfly_stretch:  imgButterflyStretch,
+  back_ball:          imgBackBall,
+  shoulder_cross:     imgShoulderCross,
+  pec_doorway:        imgPecDoorway,
+  child_pose:         imgChildPose,
+  lateral_stretch:    imgLateralStretch,
+};
+
 // ── Category color palette ──────────────────────────────────────────
 const COLORS = {
   lower_body: { bg: '#EDE6F4', fill: '#4A3669' },
@@ -822,6 +929,28 @@ export default function ExerciseIllustration({
   style = {},
 }) {
   const colors = COLORS[category] || COLORS.core;
+  const photo = EXERCISE_PHOTOS[exerciseId];
+
+  // Real photo available → render <img>
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt={exerciseId}
+        loading="lazy"
+        style={{
+          display: 'block',
+          width: typeof width === 'number' ? width : '100%',
+          height: typeof height === 'number' ? height : '100%',
+          objectFit: 'cover',
+          borderRadius,
+          ...style,
+        }}
+      />
+    );
+  }
+
+  // No photo → fall back to SVG illustration
   const poseKey = EXERCISE_POSE[exerciseId];
   const PoseFn = poseKey ? P[poseKey] : null;
 
@@ -835,7 +964,6 @@ export default function ExerciseIllustration({
       <rect width="120" height="90" fill={colors.bg} rx={borderRadius} />
       <g strokeLinecap="round" strokeLinejoin="round" fill="none">
         {PoseFn ? PoseFn(colors.fill) : (
-          // Fallback: simple standing figure
           <>
             <circle cx="60" cy="13" r="7" fill={colors.fill}/>
             <line x1="60" y1="20" x2="60" y2="50" strokeWidth="8" stroke={colors.fill}/>

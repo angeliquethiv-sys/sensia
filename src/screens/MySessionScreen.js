@@ -239,12 +239,12 @@ export default function MySessionScreen() {
               }}
             >
               {/* Exercise illustration */}
-              <div style={{ width: '100%', height: 110, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ width: '100%', height: 160, overflow: 'hidden', position: 'relative' }}>
                 <ExerciseIllustration
                   exerciseId={ex.id}
                   category={ex.category}
                   width="100%"
-                  height={110}
+                  height={160}
                   borderRadius={0}
                   style={{ width: '100%' }}
                 />
@@ -400,12 +400,12 @@ export default function MySessionScreen() {
             <div style={{ width: 36, height: 4, background: 'rgba(155,141,200,.4)', borderRadius: 2, margin: '12px auto 18px' }} />
 
             {/* Exercise header with image */}
-            <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', height: 160 }}>
+            <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', height: 300 }}>
               <ExerciseIllustration
                 exerciseId={selectedEx.id}
                 category={selectedEx.category}
                 width="100%"
-                height={160}
+                height={300}
                 borderRadius={0}
                 style={{ width: '100%' }}
               />
